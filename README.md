@@ -12,35 +12,21 @@ Modern workflow automation platform built with TypeScript, Astro, and Solid.js.
 
 ## Prerequisites
 
-- Node.js >= 20.0.0
-- pnpm >= 9.0.0 (managed via Corepack)
+- Node.js (latest LTS recommended)
+- pnpm (managed via Corepack)
 
 ## Getting Started
 
 ### 1. Set up pnpm via Corepack
 
-This project uses pnpm 9.14.4, managed by Corepack (bundled with Node.js).
-
-First, update Corepack to the latest version to avoid signature verification issues:
+This project uses pnpm, managed by Corepack (bundled with Node.js).
 
 ```bash
-npm install -g corepack@latest
 corepack enable
-```
-
-Alternatively, prepare the specific pnpm version:
-
-```bash
-corepack prepare pnpm@9.14.4 --activate
-```
-
-### 2. Install dependencies
-
-```bash
 pnpm install
 ```
 
-### 3. Run development server
+### 2. Run development server
 
 ```bash
 pnpm dev
