@@ -1,0 +1,71 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "timezone": "Europe/Berlin",
+  "schedule": ["before 6am on Monday"],
+  "prConcurrentLimit": 3,
+  "prHourlyLimit": 2,
+  "rangeStrategy": "pin",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on the first day of the month"]
+  },
+  "packageRules": [
+    {
+      "description": "Group all non-major updates together",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch"
+    },
+    {
+      "description": "Major updates should be separate PRs",
+      "matchUpdateTypes": ["major"],
+      "groupName": null
+    },
+    {
+      "description": "Group Astro ecosystem updates",
+      "matchPackagePatterns": ["^@astrojs/", "^astro$"],
+      "groupName": "astro ecosystem",
+      "groupSlug": "astro"
+    },
+    {
+      "description": "Group Biome updates",
+      "matchPackagePatterns": ["^@biomejs/"],
+      "groupName": "biome",
+      "groupSlug": "biome"
+    },
+    {
+      "description": "Group Turbo updates",
+      "matchPackageNames": ["turbo"],
+      "groupName": "turbo",
+      "groupSlug": "turbo"
+    },
+    {
+      "description": "Auto-merge patch and digest updates",
+      "matchUpdateTypes": ["patch", "digest"],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
+    },
+    {
+      "description": "Require approval for major updates",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["major-update"]
+    },
+    {
+      "description": "Special handling for TypeScript",
+      "matchPackageNames": ["typescript"],
+      "groupName": "typescript",
+      "automerge": false,
+      "labels": ["typescript"]
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"]
+  },
+  "dependencyDashboard": true,
+  "semanticCommits": "enabled",
+  "commitMessagePrefix": "chore(deps):"
+}
