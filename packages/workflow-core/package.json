@@ -1,0 +1,31 @@
+{
+  "name": "@workflow/core",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Core types, builder API, validation, and traversal utilities for workflow definitions",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "tsx --test tests/**/*.test.ts",
+    "check:types": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/node": "22.13.14",
+    "tsx": "4.19.2",
+    "typescript": "5.9.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
