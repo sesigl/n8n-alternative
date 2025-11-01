@@ -364,3 +364,10 @@ $RECYCLE.BIN/
 
 # Turbo
 .turbo/
+
+# Augmented Coding - do not commit developer-specific settings & preferences
+.claude
+CLAUDE.md
+AGENT.md
+prd.md
+tech-stack.md
