@@ -24,15 +24,15 @@
     },
     {
       "description": "Group Astro ecosystem updates",
-      "matchPackagePatterns": ["^@astrojs/", "^astro$"],
       "groupName": "astro ecosystem",
-      "groupSlug": "astro"
+      "groupSlug": "astro",
+      "matchPackageNames": ["/^@astrojs//", "/^astro$/"]
     },
     {
       "description": "Group Biome updates",
-      "matchPackagePatterns": ["^@biomejs/"],
       "groupName": "biome",
-      "groupSlug": "biome"
+      "groupSlug": "biome",
+      "matchPackageNames": ["/^@biomejs//"]
     },
     {
       "description": "Group Turbo updates",
