@@ -1,102 +1,69 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    "helpers:pinGitHubActionDigests"
-  ],
+  "extends": ["config:recommended", "helpers:pinGitHubActionDigests"],
   "timezone": "Europe/Berlin",
-  "schedule": [
-    "before 6am on Monday"
-  ],
+  "schedule": ["before 6am on Monday"],
   "prConcurrentLimit": 3,
   "prHourlyLimit": 2,
   "rangeStrategy": "pin",
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": [
-      "before 6am on the first day of the month"
-    ]
+    "schedule": ["before 6am on the first day of the month"]
   },
   "packageRules": [
     {
       "description": "Group all non-major updates together",
-      "matchUpdateTypes": [
-        "minor",
-        "patch",
-        "digest"
-      ],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
       "groupName": "all non-major dependencies",
       "groupSlug": "all-minor-patch"
     },
     {
       "description": "Major updates should be separate PRs",
-      "matchUpdateTypes": [
-        "major"
-      ],
+      "matchUpdateTypes": ["major"],
       "groupName": null
     },
     {
       "description": "Group Astro ecosystem updates",
       "groupName": "astro ecosystem",
       "groupSlug": "astro",
-      "matchPackageNames": [
-        "/^@astrojs//",
-        "/^astro$/"
-      ]
+      "matchPackageNames": ["/^@astrojs//", "/^astro$/"]
     },
     {
       "description": "Group Biome updates",
       "groupName": "biome",
       "groupSlug": "biome",
-      "matchPackageNames": [
-        "/^@biomejs//"
-      ]
+      "matchPackageNames": ["/^@biomejs//"]
     },
     {
       "description": "Group Turbo updates",
-      "matchPackageNames": [
-        "turbo"
-      ],
+      "matchPackageNames": ["turbo"],
       "groupName": "turbo",
       "groupSlug": "turbo"
     },
     {
       "description": "Auto-merge patch and digest updates",
-      "matchUpdateTypes": [
-        "patch",
-        "digest"
-      ],
+      "matchUpdateTypes": ["patch", "digest"],
       "automerge": true,
       "automergeType": "pr",
       "automergeStrategy": "squash"
     },
     {
       "description": "Require approval for major updates",
-      "matchUpdateTypes": [
-        "major"
-      ],
+      "matchUpdateTypes": ["major"],
       "automerge": false,
-      "labels": [
-        "major-update"
-      ]
+      "labels": ["major-update"]
     },
     {
       "description": "Special handling for TypeScript",
-      "matchPackageNames": [
-        "typescript"
-      ],
+      "matchPackageNames": ["typescript"],
       "groupName": "typescript",
       "automerge": false,
-      "labels": [
-        "typescript"
-      ]
+      "labels": ["typescript"]
     }
   ],
   "vulnerabilityAlerts": {
     "enabled": true,
-    "labels": [
-      "security"
-    ]
+    "labels": ["security"]
   },
   "dependencyDashboard": true,
   "semanticCommits": "enabled",
