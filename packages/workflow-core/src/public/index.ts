@@ -12,4 +12,3 @@ export { WorkflowDefinition } from "./domain/workflow/workflow-definition";
 export type { WorkflowMetadata } from "./domain/workflow/workflow-metadata";
 export type { UUID } from "./types/uuid";
 export { WorkflowBuilder } from "./workflow-builder";
-export { WorkflowValidator } from "./workflow-validator";

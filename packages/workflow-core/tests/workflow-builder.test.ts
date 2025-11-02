@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { UUID } from "../src/public/types/uuid";
 import { WorkflowBuilder } from "../src/public/workflow-builder";
-import { WorkflowValidator } from "../src/public/workflow-validator";
 
 describe("WorkflowBuilder", () => {
   it("should create workflow with metadata", () => {
@@ -465,10 +464,7 @@ describe("WorkflowBuilder", () => {
 
     builder.setEntrypoints([node1Id]);
 
-    const workflow = builder.build();
-    const validator = new WorkflowValidator();
-
-    expect(() => validator.validate(workflow)).toThrow();
+    expect(() => builder.build()).toThrow();
   });
 
   it("should reject workflow with entrypoint referencing non-existent node", () => {
@@ -485,10 +481,7 @@ describe("WorkflowBuilder", () => {
 
     builder.setEntrypoints(["non-existent-id" as UUID]);
 
-    const workflow = builder.build();
-    const validator = new WorkflowValidator();
-
-    expect(() => validator.validate(workflow)).toThrow();
+    expect(() => builder.build()).toThrow();
   });
 
   it("should reject workflow with edge referencing non-existent source node", () => {
@@ -518,10 +511,7 @@ describe("WorkflowBuilder", () => {
       target: { nodeId, portId },
     });
 
-    const workflow = builder.build();
-    const validator = new WorkflowValidator();
-
-    expect(() => validator.validate(workflow)).toThrow();
+    expect(() => builder.build()).toThrow();
   });
 
   it("should reject workflow with edge referencing non-existent target node", () => {
@@ -551,9 +541,6 @@ describe("WorkflowBuilder", () => {
       target: { nodeId: "non-existent" as UUID, portId: "port-id" as UUID },
     });
 
-    const workflow = builder.build();
-    const validator = new WorkflowValidator();
-
-    expect(() => validator.validate(workflow)).toThrow();
+    expect(() => builder.build()).toThrow();
   });
 });

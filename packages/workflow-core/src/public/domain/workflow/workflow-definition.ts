@@ -25,7 +25,9 @@ export class WorkflowDefinition {
     edges: Edge[],
     entrypoints: UUID[],
   ): WorkflowDefinition {
-    return new WorkflowDefinition(metadata, nodes, edges, entrypoints);
+    const workflow = new WorkflowDefinition(metadata, nodes, edges, entrypoints);
+    workflow.validate();
+    return workflow;
   }
 
   get nodes(): Node[] {
@@ -40,7 +42,7 @@ export class WorkflowDefinition {
     return this.entrypointsVO.entrypoints;
   }
 
-  validate(): void {
+  private validate(): void {
     this.graph.validateEdgeReferences();
     this.entrypointsVO.validateAgainstGraph(this.graph);
     this.graph.validateAcyclic();
