@@ -1,4 +1,4 @@
-import { generateUUID } from "../internal/uuid";
+import { UUIDGenerator } from "../internal/uuid";
 import type { Edge, EdgeEndpoint, Node, NodeSpec, Port, UUID, WorkflowDefinition } from "./types";
 
 interface WorkflowInit {
@@ -41,15 +41,15 @@ export class WorkflowBuilder {
   }
 
   addNode(input: AddNodeInput): UUID {
-    const nodeId = generateUUID();
+    const nodeId = UUIDGenerator.generate();
 
     const inputs: Port[] = input.ports.inputs.map((port) => ({
-      id: generateUUID(),
+      id: UUIDGenerator.generate(),
       name: port.name,
     }));
 
     const outputs: Port[] = input.ports.outputs.map((port) => ({
-      id: generateUUID(),
+      id: UUIDGenerator.generate(),
       name: port.name,
     }));
 
@@ -69,7 +69,7 @@ export class WorkflowBuilder {
   }
 
   connect(input: ConnectInput): UUID {
-    const edgeId = generateUUID();
+    const edgeId = UUIDGenerator.generate();
 
     const edge: Edge = {
       id: edgeId,

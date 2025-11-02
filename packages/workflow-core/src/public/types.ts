@@ -1,7 +1,4 @@
-/**
- * Branded type for unique identifiers
- */
-export type UUID = string & { readonly __brand: "UUID" };
+export type UUID = string;
 
 /**
  * Reference to a node type and version
