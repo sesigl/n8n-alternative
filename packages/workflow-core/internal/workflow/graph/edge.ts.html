@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">54.54% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/25</span>
+                <span class='fraction'>6/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/5</span>
+                <span class='fraction'>5/10</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">54.54% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/25</span>
+                <span class='fraction'>6/11</span>
             </div>
         
             
@@ -98,35 +98,35 @@
 <a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { EdgeEndpoint } from "@/internal/workflow/graph/edge-endpoint";
 import type { UUID } from "@/public/types/uuid";
 &nbsp;
@@ -138,26 +138,26 @@ export class Edge {
   ) {}
 &nbsp;
   static create(id: UUID, source: EdgeEndpoint, target: EdgeEndpoint): Edge {
-    if (!id || id.trim().length === 0) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!id || id.trim().length === 0) {
 <span class="cstat-no" title="statement not covered" >      throw new Error("Edge id cannot be empty");</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-    if (source.nodeId === target.<span class="branch-0 cbranch-no" title="branch not covered" >nodeId &amp;&amp; source.portId === target.portId) <span class="branch-0 cbranch-no" title="branch not covered" >{</span></span>
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (source.nodeId === target.nodeId &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >source.portId === target.portId) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error("Edge cannot connect a port to itself");</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
+    }
     return new Edge(id, source, target);
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  connectsNodes(sourceNodeId: UUID, targetNodeId: UUID): boolean {</span>
+<span class="fstat-no" title="function not covered" >  connectsNodes(s</span>ourceNodeId: UUID, targetNodeId: UUID): boolean {
 <span class="cstat-no" title="statement not covered" >    return this.source.nodeId === sourceNodeId &amp;&amp; this.target.nodeId === targetNodeId;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  equals(other: Edge): boolean {</span>
+<span class="fstat-no" title="function not covered" >  equals(o</span>ther: Edge): boolean {
 <span class="cstat-no" title="statement not covered" >    return this.id === other.id;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  toString(): string {</span>
 <span class="cstat-no" title="statement not covered" >    return `Edge(${this.source.toString()} -&gt; ${this.target.toString()})`;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  }
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -166,7 +166,7 @@ export class Edge {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-02T16:15:46.845Z
+                at 2025-11-02T16:38:08.721Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

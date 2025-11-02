@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">61.9% </span>
+                <span class="strong">55.55% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/21</span>
+                <span class='fraction'>5/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>4/8</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">61.9% </span>
+                <span class="strong">55.55% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/21</span>
+                <span class='fraction'>5/9</span>
             </div>
         
             
@@ -87,30 +87,30 @@
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">25x</span>
+<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">25x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">25x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">25x</span>
-<span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export class NodeSpec {
   private constructor(
     public readonly type: string,
@@ -118,22 +118,22 @@
   ) {}
 &nbsp;
   static create(type: string, version: number): NodeSpec {
-    if (!type || type.trim().length === 0) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!type || type.trim().length === 0) {
 <span class="cstat-no" title="statement not covered" >      throw new Error("NodeSpec type cannot be empty");</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-    if (version &lt; 1) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (version &lt; 1) {
 <span class="cstat-no" title="statement not covered" >      throw new Error("NodeSpec version must be at least 1");</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
+    }
     return new NodeSpec(type, version);
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  equals(other: NodeSpec): boolean {</span>
+<span class="fstat-no" title="function not covered" >  equals(o</span>ther: NodeSpec): boolean {
 <span class="cstat-no" title="statement not covered" >    return this.type === other.type &amp;&amp; this.version === other.version;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  toString(): string {</span>
 <span class="cstat-no" title="statement not covered" >    return `${this.type}@v${this.version}`;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  }
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -142,7 +142,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-02T16:15:46.860Z
+                at 2025-11-02T16:38:08.734Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
