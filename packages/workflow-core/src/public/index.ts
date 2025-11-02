@@ -9,3 +9,5 @@ export type {
   WorkflowDefinition,
   WorkflowMetadata,
 } from "./types";
+
+export { WorkflowBuilder } from "./workflow-builder";
