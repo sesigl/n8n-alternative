@@ -1,4 +1,4 @@
-import { UUIDGenerator } from "../internal/uuid";
+import { generateUUID } from "../internal/uuid";
 import { Edge } from "./domain/workflow/edge";
 import { EdgeEndpoint } from "./domain/workflow/edge-endpoint";
 import { Node } from "./domain/workflow/node";
@@ -47,7 +47,7 @@ export class WorkflowBuilder {
   }
 
   addNode(input: AddNodeInput): UUID {
-    const nodeId = UUIDGenerator.generate();
+    const nodeId = generateUUID();
 
     const node = Node.createWithPortNames(
       nodeId,
@@ -57,7 +57,7 @@ export class WorkflowBuilder {
         inputs: input.ports.inputs.map((p) => p.name),
         outputs: input.ports.outputs.map((p) => p.name),
       },
-      () => UUIDGenerator.generate(),
+      () => generateUUID(),
     );
 
     this.nodes.push(node);
@@ -66,7 +66,7 @@ export class WorkflowBuilder {
   }
 
   connect(input: ConnectInput): UUID {
-    const edgeId = UUIDGenerator.generate();
+    const edgeId = generateUUID();
 
     const edge = Edge.create(
       edgeId,

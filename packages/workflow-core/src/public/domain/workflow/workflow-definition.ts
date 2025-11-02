@@ -1,15 +1,23 @@
 import type { UUID } from "../../types/uuid";
 import type { Edge } from "./edge";
+import { Entrypoints } from "./entrypoints";
 import type { Node } from "./node";
+import { WorkflowGraph } from "./workflow-graph";
 import type { WorkflowMetadata } from "./workflow-metadata";
 
 export class WorkflowDefinition {
+  private readonly graph: WorkflowGraph;
+  private readonly entrypointsVO: Entrypoints;
+
   private constructor(
     public readonly metadata: WorkflowMetadata,
-    private readonly _nodes: Node[],
-    private readonly _edges: Edge[],
-    private readonly _entrypoints: UUID[],
-  ) {}
+    nodes: Node[],
+    edges: Edge[],
+    entrypoints: UUID[],
+  ) {
+    this.graph = WorkflowGraph.create(nodes, edges);
+    this.entrypointsVO = Entrypoints.create(entrypoints);
+  }
 
   static create(
     metadata: WorkflowMetadata,
@@ -21,109 +29,48 @@ export class WorkflowDefinition {
   }
 
   get nodes(): Node[] {
-    return [...this._nodes];
+    return this.graph.nodes;
   }
 
   get edges(): Edge[] {
-    return [...this._edges];
+    return this.graph.edges;
   }
 
   get entrypoints(): UUID[] {
-    return [...this._entrypoints];
+    return this.entrypointsVO.entrypoints;
   }
 
   findNode(nodeId: UUID): Node | undefined {
-    return this._nodes.find((node) => node.id === nodeId);
+    return this.graph.findNode(nodeId);
   }
 
   hasNode(nodeId: UUID): boolean {
-    return this._nodes.some((node) => node.id === nodeId);
+    return this.graph.hasNode(nodeId);
   }
 
   findEdge(edgeId: UUID): Edge | undefined {
-    return this._edges.find((edge) => edge.id === edgeId);
+    return this.graph.findEdge(edgeId);
   }
 
   getIncomingEdges(nodeId: UUID): Edge[] {
-    return this._edges.filter((edge) => edge.target.nodeId === nodeId);
+    return this.graph.getIncomingEdges(nodeId);
   }
 
   getOutgoingEdges(nodeId: UUID): Edge[] {
-    return this._edges.filter((edge) => edge.source.nodeId === nodeId);
+    return this.graph.getOutgoingEdges(nodeId);
   }
 
   isEntrypoint(nodeId: UUID): boolean {
-    return this._entrypoints.includes(nodeId);
+    return this.entrypointsVO.isEntrypoint(nodeId);
   }
 
   validate(): void {
-    this.validateShape();
-    this.detectCycles();
-  }
-
-  private validateShape(): void {
-    for (const entrypointId of this._entrypoints) {
-      if (!this.hasNode(entrypointId)) {
-        throw new Error(`Entrypoint references non-existent node: ${entrypointId}`);
-      }
-    }
-
-    for (const edge of this._edges) {
-      if (!this.hasNode(edge.source.nodeId)) {
-        throw new Error(`Edge references non-existent source node: ${edge.source.nodeId}`);
-      }
-      if (!this.hasNode(edge.target.nodeId)) {
-        throw new Error(`Edge references non-existent target node: ${edge.target.nodeId}`);
-      }
-    }
-  }
-
-  private detectCycles(): void {
-    const adjacencyMap = new Map<UUID, UUID[]>();
-
-    for (const node of this._nodes) {
-      adjacencyMap.set(node.id, []);
-    }
-
-    for (const edge of this._edges) {
-      const targets = adjacencyMap.get(edge.source.nodeId);
-      if (targets) {
-        targets.push(edge.target.nodeId);
-      }
-    }
-
-    const visited = new Set<UUID>();
-    const recursionStack = new Set<UUID>();
-
-    const hasCycle = (nodeId: UUID): boolean => {
-      visited.add(nodeId);
-      recursionStack.add(nodeId);
-
-      const neighbors = adjacencyMap.get(nodeId) || [];
-      for (const neighbor of neighbors) {
-        if (!visited.has(neighbor)) {
-          if (hasCycle(neighbor)) {
-            return true;
-          }
-        } else if (recursionStack.has(neighbor)) {
-          return true;
-        }
-      }
-
-      recursionStack.delete(nodeId);
-      return false;
-    };
-
-    for (const node of this._nodes) {
-      if (!visited.has(node.id)) {
-        if (hasCycle(node.id)) {
-          throw new Error("Cycle detected in workflow");
-        }
-      }
-    }
+    this.graph.validateEdgeReferences();
+    this.entrypointsVO.validateAgainstGraph(this.graph);
+    this.graph.validateAcyclic();
   }
 
   toString(): string {
-    return `WorkflowDefinition(${this.metadata.toString()}, ${this._nodes.length} nodes, ${this._edges.length} edges)`;
+    return `WorkflowDefinition(${this.metadata.toString()}, ${this.graph.nodeCount} nodes, ${this.graph.edgeCount} edges)`;
   }
 }

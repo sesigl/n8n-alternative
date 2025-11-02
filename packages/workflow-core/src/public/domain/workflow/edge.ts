@@ -1,5 +1,5 @@
 import type { UUID } from "../../types/uuid";
-import { EdgeEndpoint } from "./edge-endpoint";
+import type { EdgeEndpoint } from "./edge-endpoint";
 
 export class Edge {
   private constructor(

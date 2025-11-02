@@ -1,0 +1,30 @@
+import type { UUID } from "../../types/uuid";
+import type { WorkflowGraph } from "./workflow-graph";
+
+export class Entrypoints {
+  private constructor(private readonly _entrypoints: UUID[]) {}
+
+  static create(entrypoints: UUID[]): Entrypoints {
+    return new Entrypoints([...entrypoints]);
+  }
+
+  get entrypoints(): UUID[] {
+    return [...this._entrypoints];
+  }
+
+  isEntrypoint(nodeId: UUID): boolean {
+    return this._entrypoints.includes(nodeId);
+  }
+
+  validateAgainstGraph(graph: WorkflowGraph): void {
+    for (const entrypointId of this._entrypoints) {
+      if (!graph.hasNode(entrypointId)) {
+        throw new Error(`Entrypoint references non-existent node: ${entrypointId}`);
+      }
+    }
+  }
+
+  get count(): number {
+    return this._entrypoints.length;
+  }
+}
