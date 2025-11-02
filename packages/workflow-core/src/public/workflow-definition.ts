@@ -1,9 +1,10 @@
-import type { UUID } from "../../types/uuid";
-import type { Edge } from "./edge";
-import { Entrypoints } from "./entrypoints";
-import type { Node } from "./node";
-import { WorkflowGraph } from "./workflow-graph";
-import type { WorkflowMetadata } from "./workflow-metadata";
+import type { Edge } from "@/internal/workflow/graph/edge";
+import type { Node } from "@/internal/workflow/graph/node";
+import { WorkflowGraph } from "@/internal/workflow/graph/workflow-graph";
+import type { WorkflowMetadata } from "@/internal/workflow/metadata/workflow-metadata";
+import { Entrypoints } from "@/internal/workflow/validation/entrypoints";
+import type { GraphStructure } from "@/public/types/graph-structure";
+import type { UUID } from "@/public/types/uuid";
 
 export class WorkflowDefinition {
   private readonly graph: WorkflowGraph;
@@ -30,22 +31,24 @@ export class WorkflowDefinition {
     return workflow;
   }
 
-  get nodes(): Node[] {
-    return this.graph.nodes;
-  }
-
-  get edges(): Edge[] {
-    return this.graph.edges;
-  }
-
-  get entrypoints(): UUID[] {
-    return this.entrypointsVO.entrypoints;
-  }
-
   private validate(): void {
     this.graph.validateEdgeReferences();
     this.entrypointsVO.validateAgainstGraph(this.graph);
     this.graph.validateAcyclic();
+  }
+
+  getGraphStructure(): GraphStructure {
+    return {
+      nodes: this.graph.nodes.map((node) => ({
+        id: node.id,
+        type: node.spec.type,
+      })),
+      edges: this.graph.edges.map((edge) => ({
+        from: edge.source.nodeId,
+        to: edge.target.nodeId,
+      })),
+      entrypoints: this.entrypointsVO.entrypoints,
+    };
   }
 
   toString(): string {

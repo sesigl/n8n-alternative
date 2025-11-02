@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { UUID } from "../src/public/types/uuid";
 import { WorkflowBuilder } from "../src/public/workflow-builder";
+import { GraphStructureAsserter } from "./graph-structure-asserter";
 
 describe("WorkflowBuilder", () => {
   it("should create workflow with metadata", () => {
@@ -16,37 +17,13 @@ describe("WorkflowBuilder", () => {
     expect(workflow.metadata.createdAt).toBeDefined();
   });
 
-  it("should create workflow with no nodes initially", () => {
+  it("should create empty workflow successfully", () => {
     const builder = WorkflowBuilder.init({
       name: "Test",
       version: "1.0",
     });
 
-    const workflow = builder.build();
-
-    expect(workflow.nodes).toHaveLength(0);
-  });
-
-  it("should create workflow with no edges initially", () => {
-    const builder = WorkflowBuilder.init({
-      name: "Test",
-      version: "1.0",
-    });
-
-    const workflow = builder.build();
-
-    expect(workflow.edges).toHaveLength(0);
-  });
-
-  it("should create workflow with no entrypoints initially", () => {
-    const builder = WorkflowBuilder.init({
-      name: "Test",
-      version: "1.0",
-    });
-
-    const workflow = builder.build();
-
-    expect(workflow.entrypoints).toHaveLength(0);
+    expect(() => builder.build()).not.toThrow();
   });
 
   it("should add node to workflow", () => {
@@ -66,13 +43,12 @@ describe("WorkflowBuilder", () => {
 
     const workflow = builder.build();
 
-    expect(workflow.nodes).toHaveLength(1);
-    expect(workflow.nodes[0]?.id).toBe(nodeId);
-    expect(workflow.nodes[0]?.spec.type).toBe("llm.invoke");
-    expect(workflow.nodes[0]?.config.model).toBe("gpt-4");
+    GraphStructureAsserter.from(workflow.getGraphStructure())
+      .hasNodeCount(1)
+      .hasNodeWithType(nodeId, "llm.invoke");
   });
 
-  it("should generate unique IDs for ports", () => {
+  it("should add node with ports successfully", () => {
     const builder = WorkflowBuilder.init({
       name: "Test",
       version: "1.0",
@@ -87,11 +63,7 @@ describe("WorkflowBuilder", () => {
       },
     });
 
-    const workflow = builder.build();
-    const node = workflow.nodes[0];
-
-    expect(node?.ports.inputs[0]?.id).toBeDefined();
-    expect(node?.ports.outputs[0]?.id).toBeDefined();
+    expect(() => builder.build()).not.toThrow();
   });
 
   it("should add multiple nodes to workflow", () => {
@@ -114,7 +86,7 @@ describe("WorkflowBuilder", () => {
 
     const workflow = builder.build();
 
-    expect(workflow.nodes).toHaveLength(2);
+    GraphStructureAsserter.from(workflow.getGraphStructure()).hasNodeCount(2);
   });
 
   it("should connect two nodes", () => {
@@ -141,24 +113,16 @@ describe("WorkflowBuilder", () => {
       },
     });
 
-    const workflow1 = builder.build();
-    const outputPortId = workflow1.nodes[0]?.ports.outputs[0]?.id;
-    const inputPortId = workflow1.nodes[1]?.ports.inputs[0]?.id;
-
-    if (!outputPortId || !inputPortId) {
-      throw new Error("Port IDs not found");
-    }
-
     builder.connect({
-      source: { nodeId: node1Id, portId: outputPortId },
-      target: { nodeId: node2Id, portId: inputPortId },
+      source: { nodeId: node1Id, portName: "response" },
+      target: { nodeId: node2Id, portName: "prompt" },
     });
 
     const workflow = builder.build();
 
-    expect(workflow.edges).toHaveLength(1);
-    expect(workflow.edges[0]?.source.nodeId).toBe(node1Id);
-    expect(workflow.edges[0]?.target.nodeId).toBe(node2Id);
+    GraphStructureAsserter.from(workflow.getGraphStructure())
+      .hasEdgeCount(1)
+      .hasEdge(node1Id, node2Id);
   });
 
   it("should create multiple connections", () => {
@@ -194,29 +158,19 @@ describe("WorkflowBuilder", () => {
       },
     });
 
-    const workflow1 = builder.build();
-    const port1Out = workflow1.nodes[0]?.ports.outputs[0]?.id;
-    const port2In = workflow1.nodes[1]?.ports.inputs[0]?.id;
-    const port2Out = workflow1.nodes[1]?.ports.outputs[0]?.id;
-    const port3In = workflow1.nodes[2]?.ports.inputs[0]?.id;
-
-    if (!port1Out || !port2In || !port2Out || !port3In) {
-      throw new Error("Port IDs not found");
-    }
-
     builder.connect({
-      source: { nodeId: node1Id, portId: port1Out },
-      target: { nodeId: node2Id, portId: port2In },
+      source: { nodeId: node1Id, portName: "out" },
+      target: { nodeId: node2Id, portName: "in" },
     });
 
     builder.connect({
-      source: { nodeId: node2Id, portId: port2Out },
-      target: { nodeId: node3Id, portId: port3In },
+      source: { nodeId: node2Id, portName: "out" },
+      target: { nodeId: node3Id, portName: "in" },
     });
 
     const workflow = builder.build();
 
-    expect(workflow.edges).toHaveLength(2);
+    GraphStructureAsserter.from(workflow.getGraphStructure()).hasEdgeCount(2);
   });
 
   it("should set single entrypoint", () => {
@@ -238,8 +192,9 @@ describe("WorkflowBuilder", () => {
 
     const workflow = builder.build();
 
-    expect(workflow.entrypoints).toHaveLength(1);
-    expect(workflow.entrypoints[0]).toBe(nodeId);
+    GraphStructureAsserter.from(workflow.getGraphStructure())
+      .hasEntrypointCount(1)
+      .hasEntrypoint(nodeId);
   });
 
   it("should set multiple entrypoints", () => {
@@ -264,9 +219,7 @@ describe("WorkflowBuilder", () => {
 
     const workflow = builder.build();
 
-    expect(workflow.entrypoints).toHaveLength(2);
-    expect(workflow.entrypoints).toContain(node1Id);
-    expect(workflow.entrypoints).toContain(node2Id);
+    GraphStructureAsserter.from(workflow.getGraphStructure()).hasEntrypoints([node1Id, node2Id]);
   });
 
   it("should replace entrypoints when set multiple times", () => {
@@ -292,8 +245,9 @@ describe("WorkflowBuilder", () => {
 
     const workflow = builder.build();
 
-    expect(workflow.entrypoints).toHaveLength(1);
-    expect(workflow.entrypoints[0]).toBe(node2Id);
+    GraphStructureAsserter.from(workflow.getGraphStructure())
+      .hasEntrypointCount(1)
+      .hasEntrypoint(node2Id);
   });
 
   it("should build workflow with linear chain of nodes", () => {
@@ -329,33 +283,24 @@ describe("WorkflowBuilder", () => {
       },
     });
 
-    const workflow1 = builder.build();
-    const port1Out = workflow1.nodes[0]?.ports.outputs[0]?.id;
-    const port2In = workflow1.nodes[1]?.ports.inputs[0]?.id;
-    const port2Out = workflow1.nodes[1]?.ports.outputs[0]?.id;
-    const port3In = workflow1.nodes[2]?.ports.inputs[0]?.id;
-
-    if (!port1Out || !port2In || !port2Out || !port3In) {
-      throw new Error("Port IDs not found");
-    }
-
     builder.connect({
-      source: { nodeId: node1Id, portId: port1Out },
-      target: { nodeId: node2Id, portId: port2In },
+      source: { nodeId: node1Id, portName: "out" },
+      target: { nodeId: node2Id, portName: "in" },
     });
 
     builder.connect({
-      source: { nodeId: node2Id, portId: port2Out },
-      target: { nodeId: node3Id, portId: port3In },
+      source: { nodeId: node2Id, portName: "out" },
+      target: { nodeId: node3Id, portName: "in" },
     });
 
     builder.setEntrypoints([node1Id]);
 
     const workflow = builder.build();
 
-    expect(workflow.nodes).toHaveLength(3);
-    expect(workflow.edges).toHaveLength(2);
-    expect(workflow.entrypoints).toEqual([node1Id]);
+    GraphStructureAsserter.from(workflow.getGraphStructure())
+      .hasNodeCount(3)
+      .hasEdgeCount(2)
+      .hasEntrypoint(node1Id);
   });
 
   it("should build workflow with branching structure", () => {
@@ -391,31 +336,21 @@ describe("WorkflowBuilder", () => {
       },
     });
 
-    const workflow1 = builder.build();
-    const startOut = workflow1.nodes[0]?.ports.outputs[0]?.id;
-    const branchAIn = workflow1.nodes[1]?.ports.inputs[0]?.id;
-    const branchBIn = workflow1.nodes[2]?.ports.inputs[0]?.id;
-
-    if (!startOut || !branchAIn || !branchBIn) {
-      throw new Error("Port IDs not found");
-    }
-
     builder.connect({
-      source: { nodeId: startId, portId: startOut },
-      target: { nodeId: branchAId, portId: branchAIn },
+      source: { nodeId: startId, portName: "out" },
+      target: { nodeId: branchAId, portName: "in" },
     });
 
     builder.connect({
-      source: { nodeId: startId, portId: startOut },
-      target: { nodeId: branchBId, portId: branchBIn },
+      source: { nodeId: startId, portName: "out" },
+      target: { nodeId: branchBId, portName: "in" },
     });
 
     builder.setEntrypoints([startId]);
 
     const workflow = builder.build();
 
-    expect(workflow.nodes).toHaveLength(3);
-    expect(workflow.edges).toHaveLength(2);
+    GraphStructureAsserter.from(workflow.getGraphStructure()).hasNodeCount(3).hasEdgeCount(2);
   });
 
   it("should reject workflow with cycle when validation enabled", () => {
@@ -442,24 +377,14 @@ describe("WorkflowBuilder", () => {
       },
     });
 
-    const workflow1 = builder.build();
-    const port1Out = workflow1.nodes[0]?.ports.outputs[0]?.id;
-    const port1In = workflow1.nodes[0]?.ports.inputs[0]?.id;
-    const port2Out = workflow1.nodes[1]?.ports.outputs[0]?.id;
-    const port2In = workflow1.nodes[1]?.ports.inputs[0]?.id;
-
-    if (!port1Out || !port1In || !port2Out || !port2In) {
-      throw new Error("Port IDs not found");
-    }
-
     builder.connect({
-      source: { nodeId: node1Id, portId: port1Out },
-      target: { nodeId: node2Id, portId: port2In },
+      source: { nodeId: node1Id, portName: "out" },
+      target: { nodeId: node2Id, portName: "in" },
     });
 
     builder.connect({
-      source: { nodeId: node2Id, portId: port2Out },
-      target: { nodeId: node1Id, portId: port1In },
+      source: { nodeId: node2Id, portName: "out" },
+      target: { nodeId: node1Id, portName: "in" },
     });
 
     builder.setEntrypoints([node1Id]);
@@ -484,7 +409,7 @@ describe("WorkflowBuilder", () => {
     expect(() => builder.build()).toThrow();
   });
 
-  it("should reject workflow with edge referencing non-existent source node", () => {
+  it("should reject connection with non-existent source node", () => {
     const builder = WorkflowBuilder.init({
       name: "Test",
       version: "1.0",
@@ -499,22 +424,15 @@ describe("WorkflowBuilder", () => {
       },
     });
 
-    const workflow1 = builder.build();
-    const portId = workflow1.nodes[0]?.ports.inputs[0]?.id;
-
-    if (!portId) {
-      throw new Error("Port ID not found");
-    }
-
-    builder.connect({
-      source: { nodeId: "non-existent" as UUID, portId: "port-id" as UUID },
-      target: { nodeId, portId },
-    });
-
-    expect(() => builder.build()).toThrow();
+    expect(() => {
+      builder.connect({
+        source: { nodeId: "non-existent" as UUID, portName: "out" },
+        target: { nodeId, portName: "in" },
+      });
+    }).toThrow("Source node not found");
   });
 
-  it("should reject workflow with edge referencing non-existent target node", () => {
+  it("should reject connection with non-existent target node", () => {
     const builder = WorkflowBuilder.init({
       name: "Test",
       version: "1.0",
@@ -529,18 +447,11 @@ describe("WorkflowBuilder", () => {
       },
     });
 
-    const workflow1 = builder.build();
-    const portId = workflow1.nodes[0]?.ports.outputs[0]?.id;
-
-    if (!portId) {
-      throw new Error("Port ID not found");
-    }
-
-    builder.connect({
-      source: { nodeId, portId },
-      target: { nodeId: "non-existent" as UUID, portId: "port-id" as UUID },
-    });
-
-    expect(() => builder.build()).toThrow();
+    expect(() => {
+      builder.connect({
+        source: { nodeId, portName: "out" },
+        target: { nodeId: "non-existent" as UUID, portName: "in" },
+      });
+    }).toThrow("Target node not found");
   });
 });

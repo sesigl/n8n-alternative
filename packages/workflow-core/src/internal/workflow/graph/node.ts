@@ -1,5 +1,5 @@
-import type { UUID } from "../../types/uuid";
-import type { NodeSpec } from "./node-spec";
+import type { NodeSpec } from "@/internal/workflow/metadata/node-spec";
+import type { UUID } from "@/public/types/uuid";
 import { Port } from "./port";
 
 export class Node {

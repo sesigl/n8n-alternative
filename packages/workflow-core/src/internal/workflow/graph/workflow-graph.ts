@@ -1,4 +1,4 @@
-import type { UUID } from "../../types/uuid";
+import type { UUID } from "@/public/types/uuid";
 import type { Edge } from "./edge";
 import type { Node } from "./node";
 

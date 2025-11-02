@@ -1,5 +1,5 @@
-import type { UUID } from "../../types/uuid";
-import type { WorkflowGraph } from "./workflow-graph";
+import type { WorkflowGraph } from "@/internal/workflow/graph/workflow-graph";
+import type { UUID } from "@/public/types/uuid";
 
 export class Entrypoints {
   private constructor(private readonly _entrypoints: UUID[]) {}

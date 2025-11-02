@@ -1,14 +1,15 @@
 // Application Services
 
 // Types (read-only access to workflow structure)
-export type { Edge } from "./domain/workflow/edge";
-export type { EdgeEndpoint } from "./domain/workflow/edge-endpoint";
-export type { Node } from "./domain/workflow/node";
-export type { NodeSpec } from "./domain/workflow/node-spec";
-export type { Port } from "./domain/workflow/port";
-export type { ValidationResult } from "./domain/workflow/validation-result";
+export type { Edge } from "@/internal/workflow/graph/edge";
+export type { EdgeEndpoint } from "@/internal/workflow/graph/edge-endpoint";
+export type { Node } from "@/internal/workflow/graph/node";
+export type { Port } from "@/internal/workflow/graph/port";
+export type { NodeSpec } from "@/internal/workflow/metadata/node-spec";
+export type { WorkflowMetadata } from "@/internal/workflow/metadata/workflow-metadata";
+export type { ValidationResult } from "@/internal/workflow/validation/validation-result";
+export type { GraphStructure, SimpleEdge, SimpleNode } from "@/public/types/graph-structure";
+export type { UUID } from "@/public/types/uuid";
+export { WorkflowBuilder } from "@/public/workflow-builder";
 // Domain - Workflow Aggregate
-export { WorkflowDefinition } from "./domain/workflow/workflow-definition";
-export type { WorkflowMetadata } from "./domain/workflow/workflow-metadata";
-export type { UUID } from "./types/uuid";
-export { WorkflowBuilder } from "./workflow-builder";
+export { WorkflowDefinition } from "@/public/workflow-definition";

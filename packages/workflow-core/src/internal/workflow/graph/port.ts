@@ -1,4 +1,4 @@
-import type { UUID } from "../../types/uuid";
+import type { UUID } from "@/public/types/uuid";
 
 export class Port {
   private constructor(
