@@ -294,4 +294,175 @@ describe("WorkflowBuilder", () => {
     expect(workflow.entrypoints).toHaveLength(1);
     expect(workflow.entrypoints[0]).toBe(node2Id);
   });
+
+  it("should build workflow with linear chain of nodes", () => {
+    const builder = WorkflowBuilder.init({
+      name: "Test",
+      version: "1.0",
+    });
+
+    const node1Id = builder.addNode({
+      spec: { type: "start", version: 1 },
+      config: {},
+      ports: {
+        inputs: [],
+        outputs: [{ name: "out" }],
+      },
+    });
+
+    const node2Id = builder.addNode({
+      spec: { type: "middle", version: 1 },
+      config: {},
+      ports: {
+        inputs: [{ name: "in" }],
+        outputs: [{ name: "out" }],
+      },
+    });
+
+    const node3Id = builder.addNode({
+      spec: { type: "end", version: 1 },
+      config: {},
+      ports: {
+        inputs: [{ name: "in" }],
+        outputs: [],
+      },
+    });
+
+    const workflow1 = builder.build();
+    const port1Out = workflow1.nodes[0]?.ports.outputs[0]?.id;
+    const port2In = workflow1.nodes[1]?.ports.inputs[0]?.id;
+    const port2Out = workflow1.nodes[1]?.ports.outputs[0]?.id;
+    const port3In = workflow1.nodes[2]?.ports.inputs[0]?.id;
+
+    if (!port1Out || !port2In || !port2Out || !port3In) {
+      throw new Error("Port IDs not found");
+    }
+
+    builder.connect({
+      source: { nodeId: node1Id, portId: port1Out },
+      target: { nodeId: node2Id, portId: port2In },
+    });
+
+    builder.connect({
+      source: { nodeId: node2Id, portId: port2Out },
+      target: { nodeId: node3Id, portId: port3In },
+    });
+
+    builder.setEntrypoints([node1Id]);
+
+    const workflow = builder.build();
+
+    expect(workflow.nodes).toHaveLength(3);
+    expect(workflow.edges).toHaveLength(2);
+    expect(workflow.entrypoints).toEqual([node1Id]);
+  });
+
+  it("should build workflow with branching structure", () => {
+    const builder = WorkflowBuilder.init({
+      name: "Test",
+      version: "1.0",
+    });
+
+    const startId = builder.addNode({
+      spec: { type: "start", version: 1 },
+      config: {},
+      ports: {
+        inputs: [],
+        outputs: [{ name: "out" }],
+      },
+    });
+
+    const branchAId = builder.addNode({
+      spec: { type: "branch-a", version: 1 },
+      config: {},
+      ports: {
+        inputs: [{ name: "in" }],
+        outputs: [],
+      },
+    });
+
+    const branchBId = builder.addNode({
+      spec: { type: "branch-b", version: 1 },
+      config: {},
+      ports: {
+        inputs: [{ name: "in" }],
+        outputs: [],
+      },
+    });
+
+    const workflow1 = builder.build();
+    const startOut = workflow1.nodes[0]?.ports.outputs[0]?.id;
+    const branchAIn = workflow1.nodes[1]?.ports.inputs[0]?.id;
+    const branchBIn = workflow1.nodes[2]?.ports.inputs[0]?.id;
+
+    if (!startOut || !branchAIn || !branchBIn) {
+      throw new Error("Port IDs not found");
+    }
+
+    builder.connect({
+      source: { nodeId: startId, portId: startOut },
+      target: { nodeId: branchAId, portId: branchAIn },
+    });
+
+    builder.connect({
+      source: { nodeId: startId, portId: startOut },
+      target: { nodeId: branchBId, portId: branchBIn },
+    });
+
+    builder.setEntrypoints([startId]);
+
+    const workflow = builder.build();
+
+    expect(workflow.nodes).toHaveLength(3);
+    expect(workflow.edges).toHaveLength(2);
+  });
+
+  it("should reject workflow with cycle when validation enabled", () => {
+    const builder = WorkflowBuilder.init({
+      name: "Test",
+      version: "1.0",
+    });
+
+    const node1Id = builder.addNode({
+      spec: { type: "node1", version: 1 },
+      config: {},
+      ports: {
+        inputs: [{ name: "in" }],
+        outputs: [{ name: "out" }],
+      },
+    });
+
+    const node2Id = builder.addNode({
+      spec: { type: "node2", version: 1 },
+      config: {},
+      ports: {
+        inputs: [{ name: "in" }],
+        outputs: [{ name: "out" }],
+      },
+    });
+
+    const workflow1 = builder.build();
+    const port1Out = workflow1.nodes[0]?.ports.outputs[0]?.id;
+    const port1In = workflow1.nodes[0]?.ports.inputs[0]?.id;
+    const port2Out = workflow1.nodes[1]?.ports.outputs[0]?.id;
+    const port2In = workflow1.nodes[1]?.ports.inputs[0]?.id;
+
+    if (!port1Out || !port1In || !port2Out || !port2In) {
+      throw new Error("Port IDs not found");
+    }
+
+    builder.connect({
+      source: { nodeId: node1Id, portId: port1Out },
+      target: { nodeId: node2Id, portId: port2In },
+    });
+
+    builder.connect({
+      source: { nodeId: node2Id, portId: port2Out },
+      target: { nodeId: node1Id, portId: port1In },
+    });
+
+    builder.setEntrypoints([node1Id]);
+
+    expect(() => builder.build({ validate: true })).toThrow();
+  });
 });

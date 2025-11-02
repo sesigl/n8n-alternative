@@ -86,12 +86,67 @@ export class WorkflowBuilder {
     this.entrypoints = nodeIds;
   }
 
-  build(): WorkflowDefinition {
-    return {
+  build(options?: { validate?: boolean }): WorkflowDefinition {
+    const workflow: WorkflowDefinition = {
       metadata: this.metadata,
       nodes: this.nodes,
       edges: this.edges,
       entrypoints: this.entrypoints,
     };
+
+    if (options?.validate) {
+      this.validateWorkflow(workflow);
+    }
+
+    return workflow;
+  }
+
+  private validateWorkflow(workflow: WorkflowDefinition): void {
+    this.detectCycles(workflow);
+  }
+
+  private detectCycles(workflow: WorkflowDefinition): void {
+    const adjacencyMap = new Map<UUID, UUID[]>();
+
+    for (const node of workflow.nodes) {
+      adjacencyMap.set(node.id, []);
+    }
+
+    for (const edge of workflow.edges) {
+      const targets = adjacencyMap.get(edge.source.nodeId);
+      if (targets) {
+        targets.push(edge.target.nodeId);
+      }
+    }
+
+    const visited = new Set<UUID>();
+    const recursionStack = new Set<UUID>();
+
+    const hasCycle = (nodeId: UUID): boolean => {
+      visited.add(nodeId);
+      recursionStack.add(nodeId);
+
+      const neighbors = adjacencyMap.get(nodeId) || [];
+      for (const neighbor of neighbors) {
+        if (!visited.has(neighbor)) {
+          if (hasCycle(neighbor)) {
+            return true;
+          }
+        } else if (recursionStack.has(neighbor)) {
+          return true;
+        }
+      }
+
+      recursionStack.delete(nodeId);
+      return false;
+    };
+
+    for (const node of workflow.nodes) {
+      if (!visited.has(node.id)) {
+        if (hasCycle(node.id)) {
+          throw new Error("Cycle detected in workflow");
+        }
+      }
+    }
   }
 }
