@@ -5,7 +5,9 @@ export type {
   Node,
   NodeSpec,
   Port,
+  Registry,
   UUID,
+  ValidationResult,
   WorkflowDefinition,
   WorkflowMetadata,
 } from "./types";

@@ -68,3 +68,19 @@ export interface WorkflowDefinition {
   edges: Edge[];
   entrypoints: UUID[];
 }
+
+/**
+ * Validation result from registry
+ */
+export interface ValidationResult {
+  valid: boolean;
+  errors?: string[];
+}
+
+/**
+ * Registry for node type specifications
+ */
+export interface Registry {
+  has(spec: NodeSpec): boolean;
+  validate(spec: NodeSpec, config: Record<string, unknown>): ValidationResult;
+}
