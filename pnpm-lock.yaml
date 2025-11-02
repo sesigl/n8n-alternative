@@ -47,7 +47,7 @@ importers:
         version: 11.0.3
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: ^2.1.8
+        specifier: 2.1.8
         version: 2.1.8(vitest@2.1.8(@types/node@24.9.2))
       typescript:
         specifier: 5.7.2
