@@ -1,9 +1,3 @@
-import { defineConfig } from "vitest/config";
+import { defineBaseConfig } from "../vitest.config.shared";
 
-export default defineConfig({
-  test: {
-    globals: true,
-    environment: "node",
-    passWithNoTests: true,
-  },
-});
+export default defineBaseConfig(__dirname);
