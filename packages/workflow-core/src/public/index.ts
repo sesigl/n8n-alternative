@@ -1,6 +1,3 @@
-// Application Services
-
-// Types (read-only access to workflow structure)
 export type { Edge } from "@/internal/workflow/graph/edge";
 export type { EdgeEndpoint } from "@/internal/workflow/graph/edge-endpoint";
 export type { Node } from "@/internal/workflow/graph/node";
@@ -11,5 +8,4 @@ export type { ValidationResult } from "@/internal/workflow/validation/validation
 export type { GraphStructure, SimpleEdge, SimpleNode } from "@/public/types/graph-structure";
 export type { UUID } from "@/public/types/uuid";
 export { WorkflowBuilder } from "@/public/workflow-builder";
-// Domain - Workflow Aggregate
 export { WorkflowDefinition } from "@/public/workflow-definition";
