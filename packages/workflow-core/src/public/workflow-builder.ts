@@ -1,5 +1,5 @@
 import { generateUUID } from "../internal/uuid";
-import type { Node, NodeSpec, Port, UUID, WorkflowDefinition } from "./types";
+import type { Edge, EdgeEndpoint, Node, NodeSpec, Port, UUID, WorkflowDefinition } from "./types";
 
 interface WorkflowInit {
   name: string;
@@ -16,9 +16,15 @@ interface AddNodeInput {
   };
 }
 
+interface ConnectInput {
+  source: EdgeEndpoint;
+  target: EdgeEndpoint;
+}
+
 export class WorkflowBuilder {
   private metadata: WorkflowDefinition["metadata"];
   private nodes: Node[] = [];
+  private edges: Edge[] = [];
 
   private constructor(init: WorkflowInit) {
     this.metadata = {
@@ -61,11 +67,25 @@ export class WorkflowBuilder {
     return nodeId;
   }
 
+  connect(input: ConnectInput): UUID {
+    const edgeId = generateUUID();
+
+    const edge: Edge = {
+      id: edgeId,
+      source: input.source,
+      target: input.target,
+    };
+
+    this.edges.push(edge);
+
+    return edgeId;
+  }
+
   build(): WorkflowDefinition {
     return {
       metadata: this.metadata,
       nodes: this.nodes,
-      edges: [],
+      edges: this.edges,
       entrypoints: [],
     };
   }

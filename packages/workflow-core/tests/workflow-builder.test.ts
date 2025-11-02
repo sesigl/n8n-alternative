@@ -115,4 +115,106 @@ describe("WorkflowBuilder", () => {
 
     expect(workflow.nodes).toHaveLength(2);
   });
+
+  it("should connect two nodes", () => {
+    const builder = WorkflowBuilder.init({
+      name: "Test",
+      version: "1.0",
+    });
+
+    const node1Id = builder.addNode({
+      spec: { type: "http.request", version: 1 },
+      config: {},
+      ports: {
+        inputs: [],
+        outputs: [{ name: "response" }],
+      },
+    });
+
+    const node2Id = builder.addNode({
+      spec: { type: "llm.invoke", version: 1 },
+      config: {},
+      ports: {
+        inputs: [{ name: "prompt" }],
+        outputs: [],
+      },
+    });
+
+    const workflow1 = builder.build();
+    const outputPortId = workflow1.nodes[0]?.ports.outputs[0]?.id;
+    const inputPortId = workflow1.nodes[1]?.ports.inputs[0]?.id;
+
+    if (!outputPortId || !inputPortId) {
+      throw new Error("Port IDs not found");
+    }
+
+    builder.connect({
+      source: { nodeId: node1Id, portId: outputPortId },
+      target: { nodeId: node2Id, portId: inputPortId },
+    });
+
+    const workflow = builder.build();
+
+    expect(workflow.edges).toHaveLength(1);
+    expect(workflow.edges[0]?.source.nodeId).toBe(node1Id);
+    expect(workflow.edges[0]?.target.nodeId).toBe(node2Id);
+  });
+
+  it("should create multiple connections", () => {
+    const builder = WorkflowBuilder.init({
+      name: "Test",
+      version: "1.0",
+    });
+
+    const node1Id = builder.addNode({
+      spec: { type: "start", version: 1 },
+      config: {},
+      ports: {
+        inputs: [],
+        outputs: [{ name: "out" }],
+      },
+    });
+
+    const node2Id = builder.addNode({
+      spec: { type: "middle", version: 1 },
+      config: {},
+      ports: {
+        inputs: [{ name: "in" }],
+        outputs: [{ name: "out" }],
+      },
+    });
+
+    const node3Id = builder.addNode({
+      spec: { type: "end", version: 1 },
+      config: {},
+      ports: {
+        inputs: [{ name: "in" }],
+        outputs: [],
+      },
+    });
+
+    const workflow1 = builder.build();
+    const port1Out = workflow1.nodes[0]?.ports.outputs[0]?.id;
+    const port2In = workflow1.nodes[1]?.ports.inputs[0]?.id;
+    const port2Out = workflow1.nodes[1]?.ports.outputs[0]?.id;
+    const port3In = workflow1.nodes[2]?.ports.inputs[0]?.id;
+
+    if (!port1Out || !port2In || !port2Out || !port3In) {
+      throw new Error("Port IDs not found");
+    }
+
+    builder.connect({
+      source: { nodeId: node1Id, portId: port1Out },
+      target: { nodeId: node2Id, portId: port2In },
+    });
+
+    builder.connect({
+      source: { nodeId: node2Id, portId: port2Out },
+      target: { nodeId: node3Id, portId: port3In },
+    });
+
+    const workflow = builder.build();
+
+    expect(workflow.edges).toHaveLength(2);
+  });
 });
