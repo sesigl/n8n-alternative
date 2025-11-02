@@ -102,7 +102,27 @@ export class WorkflowBuilder {
   }
 
   private validateWorkflow(workflow: WorkflowDefinition): void {
+    this.validateShape(workflow);
     this.detectCycles(workflow);
+  }
+
+  private validateShape(workflow: WorkflowDefinition): void {
+    const nodeIds = new Set(workflow.nodes.map((node) => node.id));
+
+    for (const entrypointId of workflow.entrypoints) {
+      if (!nodeIds.has(entrypointId)) {
+        throw new Error(`Entrypoint references non-existent node: ${entrypointId}`);
+      }
+    }
+
+    for (const edge of workflow.edges) {
+      if (!nodeIds.has(edge.source.nodeId)) {
+        throw new Error(`Edge references non-existent source node: ${edge.source.nodeId}`);
+      }
+      if (!nodeIds.has(edge.target.nodeId)) {
+        throw new Error(`Edge references non-existent target node: ${edge.target.nodeId}`);
+      }
+    }
   }
 
   private detectCycles(workflow: WorkflowDefinition): void {

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import type { UUID } from "../src/public/types";
 import { WorkflowBuilder } from "../src/public/workflow-builder";
 
 describe("WorkflowBuilder", () => {
@@ -462,6 +463,83 @@ describe("WorkflowBuilder", () => {
     });
 
     builder.setEntrypoints([node1Id]);
+
+    expect(() => builder.build({ validate: true })).toThrow();
+  });
+
+  it("should reject workflow with entrypoint referencing non-existent node", () => {
+    const builder = WorkflowBuilder.init({
+      name: "Test",
+      version: "1.0",
+    });
+
+    builder.addNode({
+      spec: { type: "test", version: 1 },
+      config: {},
+      ports: { inputs: [], outputs: [] },
+    });
+
+    builder.setEntrypoints(["non-existent-id" as UUID]);
+
+    expect(() => builder.build({ validate: true })).toThrow();
+  });
+
+  it("should reject workflow with edge referencing non-existent source node", () => {
+    const builder = WorkflowBuilder.init({
+      name: "Test",
+      version: "1.0",
+    });
+
+    const nodeId = builder.addNode({
+      spec: { type: "test", version: 1 },
+      config: {},
+      ports: {
+        inputs: [{ name: "in" }],
+        outputs: [],
+      },
+    });
+
+    const workflow1 = builder.build();
+    const portId = workflow1.nodes[0]?.ports.inputs[0]?.id;
+
+    if (!portId) {
+      throw new Error("Port ID not found");
+    }
+
+    builder.connect({
+      source: { nodeId: "non-existent" as UUID, portId: "port-id" as UUID },
+      target: { nodeId, portId },
+    });
+
+    expect(() => builder.build({ validate: true })).toThrow();
+  });
+
+  it("should reject workflow with edge referencing non-existent target node", () => {
+    const builder = WorkflowBuilder.init({
+      name: "Test",
+      version: "1.0",
+    });
+
+    const nodeId = builder.addNode({
+      spec: { type: "test", version: 1 },
+      config: {},
+      ports: {
+        inputs: [],
+        outputs: [{ name: "out" }],
+      },
+    });
+
+    const workflow1 = builder.build();
+    const portId = workflow1.nodes[0]?.ports.outputs[0]?.id;
+
+    if (!portId) {
+      throw new Error("Port ID not found");
+    }
+
+    builder.connect({
+      source: { nodeId, portId },
+      target: { nodeId: "non-existent" as UUID, portId: "port-id" as UUID },
+    });
 
     expect(() => builder.build({ validate: true })).toThrow();
   });
