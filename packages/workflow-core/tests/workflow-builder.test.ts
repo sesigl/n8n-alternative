@@ -217,4 +217,81 @@ describe("WorkflowBuilder", () => {
 
     expect(workflow.edges).toHaveLength(2);
   });
+
+  it("should set single entrypoint", () => {
+    const builder = WorkflowBuilder.init({
+      name: "Test",
+      version: "1.0",
+    });
+
+    const nodeId = builder.addNode({
+      spec: { type: "trigger", version: 1 },
+      config: {},
+      ports: {
+        inputs: [],
+        outputs: [{ name: "out" }],
+      },
+    });
+
+    builder.setEntrypoints([nodeId]);
+
+    const workflow = builder.build();
+
+    expect(workflow.entrypoints).toHaveLength(1);
+    expect(workflow.entrypoints[0]).toBe(nodeId);
+  });
+
+  it("should set multiple entrypoints", () => {
+    const builder = WorkflowBuilder.init({
+      name: "Test",
+      version: "1.0",
+    });
+
+    const node1Id = builder.addNode({
+      spec: { type: "trigger1", version: 1 },
+      config: {},
+      ports: { inputs: [], outputs: [] },
+    });
+
+    const node2Id = builder.addNode({
+      spec: { type: "trigger2", version: 1 },
+      config: {},
+      ports: { inputs: [], outputs: [] },
+    });
+
+    builder.setEntrypoints([node1Id, node2Id]);
+
+    const workflow = builder.build();
+
+    expect(workflow.entrypoints).toHaveLength(2);
+    expect(workflow.entrypoints).toContain(node1Id);
+    expect(workflow.entrypoints).toContain(node2Id);
+  });
+
+  it("should replace entrypoints when set multiple times", () => {
+    const builder = WorkflowBuilder.init({
+      name: "Test",
+      version: "1.0",
+    });
+
+    const node1Id = builder.addNode({
+      spec: { type: "trigger1", version: 1 },
+      config: {},
+      ports: { inputs: [], outputs: [] },
+    });
+
+    const node2Id = builder.addNode({
+      spec: { type: "trigger2", version: 1 },
+      config: {},
+      ports: { inputs: [], outputs: [] },
+    });
+
+    builder.setEntrypoints([node1Id]);
+    builder.setEntrypoints([node2Id]);
+
+    const workflow = builder.build();
+
+    expect(workflow.entrypoints).toHaveLength(1);
+    expect(workflow.entrypoints[0]).toBe(node2Id);
+  });
 });

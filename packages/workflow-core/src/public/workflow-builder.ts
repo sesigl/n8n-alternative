@@ -25,6 +25,7 @@ export class WorkflowBuilder {
   private metadata: WorkflowDefinition["metadata"];
   private nodes: Node[] = [];
   private edges: Edge[] = [];
+  private entrypoints: UUID[] = [];
 
   private constructor(init: WorkflowInit) {
     this.metadata = {
@@ -81,12 +82,16 @@ export class WorkflowBuilder {
     return edgeId;
   }
 
+  setEntrypoints(nodeIds: UUID[]): void {
+    this.entrypoints = nodeIds;
+  }
+
   build(): WorkflowDefinition {
     return {
       metadata: this.metadata,
       nodes: this.nodes,
       edges: this.edges,
-      entrypoints: [],
+      entrypoints: this.entrypoints,
     };
   }
 }
