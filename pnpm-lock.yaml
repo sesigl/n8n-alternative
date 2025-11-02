@@ -41,6 +41,10 @@ importers:
         version: 5.9.3
 
   packages/workflow-core:
+    dependencies:
+      uuid:
+        specifier: 11.0.3
+        version: 11.0.3
     devDependencies:
       typescript:
         specifier: 5.7.2
@@ -2406,6 +2410,10 @@ packages:
     hasBin: true
     peerDependencies:
       browserslist: '>= 4.21.0'
+
+  uuid@11.0.3:
+    resolution: {integrity: sha512-d0z310fCWv5dJwnX1Y/MncBAqGMKEzlBb1AOf7z9K8ALnd0utBX/msg/fA0+sbyN1ihbMsLhrBlnl1ak7Wa0rg==}
+    hasBin: true
 
   vfile-location@5.0.3:
     resolution: {integrity: sha512-5yXvWDEgqeiYiBe1lbxYF7UMAIm/IcopxMHrMQDq3nvKcjPKIhZklUKL+AE7J7uApI4kwe2snsK+eI6UTj9EHg==}
@@ -5338,6 +5346,8 @@ snapshots:
       browserslist: 4.27.0
       escalade: 3.2.0
       picocolors: 1.1.1
+
+  uuid@11.0.3: {}
 
   vfile-location@5.0.3:
     dependencies:
