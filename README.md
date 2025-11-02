@@ -1,5 +1,7 @@
 # n8n-alternative
 
+![Coverage](https://raw.githubusercontent.com/sesigl/n8n-alternative/gh-pages/badges/coverage.svg?raw=true)
+
 Modern workflow automation platform built with TypeScript, Astro, and Solid.js.
 
 ## Tech Stack
@@ -37,6 +39,7 @@ pnpm dev
 - `pnpm dev` - Start all apps in development mode
 - `pnpm build` - Build all apps
 - `pnpm test` - Run tests
+- `pnpm test:coverage` - Run tests with coverage reports
 - `pnpm check` - Run all checks (pinned versions, linting, type checking)
 - `pnpm check:types` - Run TypeScript type checking
 - `pnpm check:pinned-versions` - Validate all dependencies use pinned versions

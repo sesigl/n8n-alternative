@@ -371,3 +371,6 @@ CLAUDE.md
 AGENT.md
 prd.md
 tech-stack.md
+
+# Test coverage
+coverage-reports-test
