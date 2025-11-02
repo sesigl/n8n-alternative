@@ -1,2 +1,11 @@
 // Public API for @workflow/core
-// Types, builders, and utilities will be exported here
+export type {
+  Edge,
+  EdgeEndpoint,
+  Node,
+  NodeSpec,
+  Port,
+  UUID,
+  WorkflowDefinition,
+  WorkflowMetadata,
+} from "./types";
