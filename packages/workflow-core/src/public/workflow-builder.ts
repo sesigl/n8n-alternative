@@ -1,14 +1,11 @@
 import { UUIDGenerator } from "../internal/uuid";
-import {
-  Edge,
-  EdgeEndpoint,
-  Node,
-  NodeSpec,
-  Port,
-  type UUID,
-  WorkflowDefinition,
-  WorkflowMetadata,
-} from "./types";
+import { Edge } from "./domain/workflow/edge";
+import { EdgeEndpoint } from "./domain/workflow/edge-endpoint";
+import { Node } from "./domain/workflow/node";
+import { NodeSpec } from "./domain/workflow/node-spec";
+import { WorkflowDefinition } from "./domain/workflow/workflow-definition";
+import { WorkflowMetadata } from "./domain/workflow/workflow-metadata";
+import type { UUID } from "./types/uuid";
 
 interface WorkflowInit {
   name: string;

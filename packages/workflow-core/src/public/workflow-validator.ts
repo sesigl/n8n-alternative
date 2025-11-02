@@ -1,4 +1,4 @@
-import type { WorkflowDefinition } from "./types";
+import type { WorkflowDefinition } from "./domain/workflow/workflow-definition";
 
 export class WorkflowValidator {
   validate(workflow: WorkflowDefinition): void {
