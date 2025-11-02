@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { UUID } from "../src/public/types";
+import type { UUID } from "../src/public/types/uuid";
 import { WorkflowBuilder } from "../src/public/workflow-builder";
 import { WorkflowValidator } from "../src/public/workflow-validator";
 

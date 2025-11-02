@@ -1,5 +1,11 @@
 import { UUIDGenerator } from "../internal/uuid";
-import type { Edge, EdgeEndpoint, Node, NodeSpec, Port, UUID, WorkflowDefinition } from "./types";
+import { Edge } from "./domain/workflow/edge";
+import { EdgeEndpoint } from "./domain/workflow/edge-endpoint";
+import { Node } from "./domain/workflow/node";
+import { NodeSpec } from "./domain/workflow/node-spec";
+import { WorkflowDefinition } from "./domain/workflow/workflow-definition";
+import { WorkflowMetadata } from "./domain/workflow/workflow-metadata";
+import type { UUID } from "./types/uuid";
 
 interface WorkflowInit {
   name: string;
@@ -8,7 +14,7 @@ interface WorkflowInit {
 }
 
 interface AddNodeInput {
-  spec: NodeSpec;
+  spec: { type: string; version: number };
   config: Record<string, unknown>;
   ports: {
     inputs: Array<{ name: string }>;
@@ -17,23 +23,23 @@ interface AddNodeInput {
 }
 
 interface ConnectInput {
-  source: EdgeEndpoint;
-  target: EdgeEndpoint;
+  source: { nodeId: UUID; portId: UUID };
+  target: { nodeId: UUID; portId: UUID };
 }
 
 export class WorkflowBuilder {
-  private metadata: WorkflowDefinition["metadata"];
+  private metadata: WorkflowMetadata;
   private nodes: Node[] = [];
   private edges: Edge[] = [];
   private entrypoints: UUID[] = [];
 
   private constructor(init: WorkflowInit) {
-    this.metadata = {
-      name: init.name,
-      version: init.version,
-      createdAt: new Date().toISOString(),
-      description: init.description,
-    };
+    this.metadata = WorkflowMetadata.create(
+      init.name,
+      init.version,
+      new Date().toISOString(),
+      init.description,
+    );
   }
 
   static init(init: WorkflowInit): WorkflowBuilder {
@@ -43,25 +49,16 @@ export class WorkflowBuilder {
   addNode(input: AddNodeInput): UUID {
     const nodeId = UUIDGenerator.generate();
 
-    const inputs: Port[] = input.ports.inputs.map((port) => ({
-      id: UUIDGenerator.generate(),
-      name: port.name,
-    }));
-
-    const outputs: Port[] = input.ports.outputs.map((port) => ({
-      id: UUIDGenerator.generate(),
-      name: port.name,
-    }));
-
-    const node: Node = {
-      id: nodeId,
-      spec: input.spec,
-      config: input.config,
-      ports: {
-        inputs,
-        outputs,
+    const node = Node.createWithPortNames(
+      nodeId,
+      NodeSpec.create(input.spec.type, input.spec.version),
+      input.config,
+      {
+        inputs: input.ports.inputs.map((p) => p.name),
+        outputs: input.ports.outputs.map((p) => p.name),
       },
-    };
+      () => UUIDGenerator.generate(),
+    );
 
     this.nodes.push(node);
 
@@ -71,11 +68,11 @@ export class WorkflowBuilder {
   connect(input: ConnectInput): UUID {
     const edgeId = UUIDGenerator.generate();
 
-    const edge: Edge = {
-      id: edgeId,
-      source: input.source,
-      target: input.target,
-    };
+    const edge = Edge.create(
+      edgeId,
+      EdgeEndpoint.create(input.source.nodeId, input.source.portId),
+      EdgeEndpoint.create(input.target.nodeId, input.target.portId),
+    );
 
     this.edges.push(edge);
 
@@ -87,11 +84,6 @@ export class WorkflowBuilder {
   }
 
   build(): WorkflowDefinition {
-    return {
-      metadata: this.metadata,
-      nodes: this.nodes,
-      edges: this.edges,
-      entrypoints: this.entrypoints,
-    };
+    return WorkflowDefinition.create(this.metadata, this.nodes, this.edges, this.entrypoints);
   }
 }

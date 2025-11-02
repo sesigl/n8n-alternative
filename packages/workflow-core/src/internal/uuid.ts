@@ -1,5 +1,5 @@
 import { v4 as uuidv4, validate } from "uuid";
-import type { UUID } from "../public/types";
+import type { UUID } from "../public/types/uuid";
 
 export class UUIDGenerator {
   static generate(): UUID {
