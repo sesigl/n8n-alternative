@@ -11,7 +11,7 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
-    "check": "pnpm check:pinned-versions && pnpm check:imports && pnpm lint && pnpm check:types",
+    "check": "pnpm check:pinned-versions && pnpm check:imports && pnpm lint && pnpm build && pnpm test",
     "check:types": "turbo run check:types",
     "check:imports": "bash scripts/check-imports.sh",
     "check:pinned-versions": "bash scripts/check-pinned-versions.sh",
