@@ -1,6 +1,6 @@
 # n8n-alternative
 
-![Coverage](https://raw.githubusercontent.com/sesigl/n8n-alternative/gh-pages/badges/coverage.svg?raw=true)
+<img src="https://raw.githubusercontent.com/sesigl/n8n-alternative/gh-pages/badges/coverage.svg?raw=true" alt="Coverage" />
 
 Modern workflow automation platform built with TypeScript, Astro, and Solid.js.
 
