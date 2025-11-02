@@ -40,30 +40,6 @@ export class WorkflowDefinition {
     return this.entrypointsVO.entrypoints;
   }
 
-  findNode(nodeId: UUID): Node | undefined {
-    return this.graph.findNode(nodeId);
-  }
-
-  hasNode(nodeId: UUID): boolean {
-    return this.graph.hasNode(nodeId);
-  }
-
-  findEdge(edgeId: UUID): Edge | undefined {
-    return this.graph.findEdge(edgeId);
-  }
-
-  getIncomingEdges(nodeId: UUID): Edge[] {
-    return this.graph.getIncomingEdges(nodeId);
-  }
-
-  getOutgoingEdges(nodeId: UUID): Edge[] {
-    return this.graph.getOutgoingEdges(nodeId);
-  }
-
-  isEntrypoint(nodeId: UUID): boolean {
-    return this.entrypointsVO.isEntrypoint(nodeId);
-  }
-
   validate(): void {
     this.graph.validateEdgeReferences();
     this.entrypointsVO.validateAgainstGraph(this.graph);
