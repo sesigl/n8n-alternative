@@ -1,5 +1,5 @@
+import type { EdgeEndpoint } from "@/internal/workflow/graph/edge-endpoint";
 import type { UUID } from "@/public/types/uuid";
-import type { EdgeEndpoint } from "./edge-endpoint";
 
 export class Edge {
   private constructor(
