@@ -1,2 +1,3 @@
 // Public API for @workflow/registry
-// Node specifications and registry implementation will be exported here
+export { NodeRegistry } from "@/public/node-registry.js";
+export type { NodeDefinition, NodeMetadata } from "@/public/types.js";
