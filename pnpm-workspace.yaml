@@ -1,6 +1,7 @@
 packages:
   - apps/*
   - packages/*
+  - packages/workflow-nodes/*
   - services/*
 
 onlyBuiltDependencies:

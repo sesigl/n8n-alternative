@@ -1,13 +1,13 @@
 {
-  "name": "@workflow/registry",
+  "name": "@workflow-nodes/trigger-execution",
   "version": "0.1.0",
   "type": "module",
-  "main": "./dist/src/public/index.js",
-  "types": "./dist/src/public/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/src/public/index.d.ts",
-      "import": "./dist/src/public/index.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
   "scripts": {
@@ -20,8 +20,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@workflow/core": "workspace:*",
-    "zod": "4.1.12"
+    "@workflow/registry": "workspace:*"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "4.0.6",
