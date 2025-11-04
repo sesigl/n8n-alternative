@@ -6,6 +6,7 @@
   "types": "./dist/src/public/index.d.ts",
   "exports": {
     ".": {
+      "development": "./src/public/index.ts",
       "types": "./dist/src/public/index.d.ts",
       "import": "./dist/src/public/index.js"
     }

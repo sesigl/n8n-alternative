@@ -1,3 +1,11 @@
-import { defineBaseConfig } from "../../vitest.config.shared.js";
+import { defineProject, mergeConfig } from "vitest/config";
+import { sharedConfig } from "../../../vitest.shared";
 
-export default defineBaseConfig(__dirname);
+export default mergeConfig(
+  sharedConfig,
+  defineProject({
+    test: {
+      name: "trigger-execution",
+    },
+  }),
+);
