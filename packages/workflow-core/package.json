@@ -2,12 +2,12 @@
   "name": "@workflow/core",
   "version": "0.1.0",
   "type": "module",
-  "main": "./dist/public/index.js",
-  "types": "./dist/public/index.d.ts",
+  "main": "./dist/src/public/index.js",
+  "types": "./dist/src/public/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/public/index.d.ts",
-      "import": "./dist/public/index.js"
+      "types": "./dist/src/public/index.d.ts",
+      "import": "./dist/src/public/index.js"
     }
   },
   "scripts": {

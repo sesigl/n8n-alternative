@@ -13,7 +13,7 @@ export const triggerExecutionNode: NodeDefinition = {
   // biome-ignore lint/suspicious/useAwait: execute function must be async per NodeDefinition interface
   execute: async () => {
     return {
-      executionStarted: Date.now(),
+      executionStarted: Date.now().toString(),
     };
   },
 };
