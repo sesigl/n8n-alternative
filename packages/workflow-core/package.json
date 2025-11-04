@@ -21,6 +21,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@workflow/registry": "workspace:*",
     "uuid": "13.0.0"
   },
   "devDependencies": {

@@ -51,6 +51,9 @@ importers:
 
   packages/workflow-core:
     dependencies:
+      '@workflow/registry':
+        specifier: workspace:*
+        version: link:../workflow-registry
       uuid:
         specifier: 13.0.0
         version: 13.0.0

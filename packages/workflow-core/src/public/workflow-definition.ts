@@ -1,3 +1,4 @@
+import type { NodeRegistry } from "@workflow/registry";
 import type { Edge } from "@/internal/workflow/graph/edge";
 import type { Node } from "@/internal/workflow/graph/node";
 import { WorkflowGraph } from "@/internal/workflow/graph/workflow-graph";
@@ -25,16 +26,27 @@ export class WorkflowDefinition {
     nodes: Node[],
     edges: Edge[],
     entrypoints: UUID[],
+    registry: NodeRegistry,
   ): WorkflowDefinition {
     const workflow = new WorkflowDefinition(metadata, nodes, edges, entrypoints);
-    workflow.validate();
+    workflow.validate(registry);
     return workflow;
   }
 
-  private validate(): void {
+  private validate(registry: NodeRegistry): void {
     this.graph.validateEdgeReferences();
     this.entrypointsVO.validateAgainstGraph(this.graph);
     this.graph.validateAcyclic();
+    this.validateAgainstRegistry(registry);
+  }
+
+  private validateAgainstRegistry(registry: NodeRegistry): void {
+    for (const node of this.graph.nodes) {
+      const nodeKey = `${node.spec.type}@${node.spec.version}`;
+      if (!registry.getNode(nodeKey)) {
+        throw new Error(`Node type not found: ${nodeKey}`);
+      }
+    }
   }
 
   getGraphStructure(): GraphStructure {

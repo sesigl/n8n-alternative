@@ -3,9 +3,9 @@ import type { NodeRegistry } from "@workflow/registry";
 import type { ExecutionResult } from "@/public/types";
 
 export class WorkflowExecutor {
-  constructor(private readonly registry: NodeRegistry) {}
+  constructor(readonly _registry: NodeRegistry) {}
 
-  async execute(workflow: WorkflowDefinition): Promise<ExecutionResult> {
+  execute(_workflow: WorkflowDefinition): ExecutionResult {
     return {
       status: "completed",
     };

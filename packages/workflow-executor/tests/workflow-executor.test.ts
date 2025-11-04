@@ -5,38 +5,35 @@ import { WorkflowExecutor } from "@/public/workflow-executor";
 
 describe("WorkflowExecutor", () => {
   it("should accept and validate WorkflowDefinition", () => {
+    const registry = new NodeRegistry();
     const workflow = WorkflowBuilder.init({
       name: "Simple Workflow",
       version: "1.0",
-    }).build();
+    }).build(registry);
 
-    const registry = new NodeRegistry();
     const executor = new WorkflowExecutor(registry);
 
     expect(() => executor.execute(workflow)).not.toThrow();
   });
 
-  it("should fail when node type is missing from registry", async () => {
+  it("should fail when node type is missing from registry", () => {
     const registry = new NodeRegistry();
 
     const builder = WorkflowBuilder.init({
       name: "Test Workflow",
       version: "1.0",
-    })
+    });
 
     builder.addNode({
-        spec: { type: "unknown.node", version: 1 },
-        config: {},
-        ports: { inputs: [], outputs: [] },
-      })
-    const workflow = builder.build();
+      spec: { type: "unknown.node", version: 1 },
+      config: {},
+      ports: { inputs: [], outputs: [] },
+    });
 
-    const executor = new WorkflowExecutor(registry);
-
-    await expect(executor.execute(workflow)).rejects.toThrow("Node type not found");
+    expect(() => builder.build(registry)).toThrow("Node type not found");
   });
 
-  it("should execute single node workflow", async () => {
+  it("should execute single node workflow", () => {
     const registry = new NodeRegistry();
 
     registry.registerNode({
@@ -58,10 +55,10 @@ describe("WorkflowExecutor", () => {
       ports: { inputs: [], outputs: [{ name: "result" }] },
     });
 
-    const workflow = builder.build();
+    const workflow = builder.build(registry);
 
     const executor = new WorkflowExecutor(registry);
-    const result = await executor.execute(workflow);
+    const result = executor.execute(workflow);
 
     expect(result.status).toBe("completed");
   });
