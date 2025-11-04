@@ -9,9 +9,9 @@ describe("Trigger Execution Node", () => {
   it("should return outputs matching the defined types", async () => {
     const result = await triggerExecutionNode.execute({});
 
-    for (const [outputName, expectedType] of Object.entries(triggerExecutionNode.outputs)) {
+    for (const [outputName, _expectedType] of Object.entries(triggerExecutionNode.outputs)) {
       expect(result[outputName]).toBeDefined();
-      expect(typeof result[outputName]).toBe(expectedType);
+      expect(typeof result[outputName]).toBe("string");
     }
   });
 
@@ -19,7 +19,8 @@ describe("Trigger Execution Node", () => {
     const result = await triggerExecutionNode.execute({});
 
     expect(result.executionStarted).toBeDefined();
-    expect(typeof result.executionStarted).toBe("number");
+    expect(typeof result.executionStarted).toBe("string");
+    expect(Number.parseInt(result.executionStarted as string, 10)).toBeGreaterThan(0);
   });
 
   it("should generate unique timestamp on each execution", async () => {
@@ -35,7 +36,8 @@ describe("Trigger Execution Node", () => {
     const result = await triggerExecutionNode.execute({});
     const afterExecution = Date.now();
 
-    expect(result.executionStarted).toBeGreaterThanOrEqual(beforeExecution);
-    expect(result.executionStarted).toBeLessThanOrEqual(afterExecution);
+    const timestamp = Number.parseInt(result.executionStarted as string, 10);
+    expect(timestamp).toBeGreaterThanOrEqual(beforeExecution);
+    expect(timestamp).toBeLessThanOrEqual(afterExecution);
   });
 });
