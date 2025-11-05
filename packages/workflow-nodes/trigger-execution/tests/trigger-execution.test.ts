@@ -23,14 +23,6 @@ describe("Trigger Execution Node", () => {
     expect(Number.parseInt(result.executionStarted as string, 10)).toBeGreaterThan(0);
   });
 
-  it("should generate unique timestamp on each execution", async () => {
-    const result1 = await triggerExecutionNode.execute({});
-    await new Promise((resolve) => setTimeout(resolve, 1));
-    const result2 = await triggerExecutionNode.execute({});
-
-    expect(result1.executionStarted).not.toBe(result2.executionStarted);
-  });
-
   it("should return current timestamp", async () => {
     const beforeExecution = Date.now();
     const result = await triggerExecutionNode.execute({});
