@@ -42,9 +42,8 @@ export class WorkflowDefinition {
 
   private validateAgainstRegistry(registry: NodeRegistry): void {
     for (const node of this.graph.nodes) {
-      const nodeKey = `${node.spec.type}@${node.spec.version}`;
-      if (!registry.getNode(nodeKey)) {
-        throw new Error(`Node type not found: ${nodeKey}`);
+      if (!registry.getNode(node.spec.type, node.spec.version)) {
+        throw new Error(`Node type not found: ${node.spec.type}@${node.spec.version}`);
       }
     }
   }

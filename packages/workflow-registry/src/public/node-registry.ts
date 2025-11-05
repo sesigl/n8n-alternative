@@ -19,14 +19,16 @@ export class NodeRegistry {
     return Array.from(this.nodes.keys());
   }
 
-  getNode(typeName: string): NodeDefinition | undefined {
-    const node = this.nodes.get(typeName);
+  getNode(typeName: string, version: number): NodeDefinition | undefined {
+    const nodeKey = `${typeName}@${version}`;
+    const node = this.nodes.get(nodeKey);
     if (!node) {
       return undefined;
     }
 
     return {
-      type: node.type.toString(),
+      type: typeName,
+      version: version,
       metadata: node.metadata,
       inputs: node.inputs,
       outputs: node.outputs,

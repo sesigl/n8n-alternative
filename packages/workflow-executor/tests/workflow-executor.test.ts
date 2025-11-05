@@ -37,7 +37,8 @@ describe("WorkflowExecutor", () => {
     const registry = new NodeRegistry();
 
     registry.registerNode({
-      type: "trigger.test@1",
+      type: "trigger.test",
+      version: 1,
       metadata: { name: "Test Trigger", description: "Test trigger node" },
       inputs: {},
       outputs: { result: "string" },

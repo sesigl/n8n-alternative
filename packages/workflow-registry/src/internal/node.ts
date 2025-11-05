@@ -9,7 +9,7 @@ export class Node {
   readonly execute: (inputs: Record<string, string>) => Promise<Record<string, string>>;
 
   constructor(definition: NodeDefinition) {
-    this.type = new NodeType(definition.type);
+    this.type = new NodeType(definition.type, definition.version);
     this.metadata = definition.metadata;
     this.inputs = definition.inputs;
     this.outputs = definition.outputs;

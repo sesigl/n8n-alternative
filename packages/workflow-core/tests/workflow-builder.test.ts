@@ -7,7 +7,8 @@ import { GraphStructureAsserter } from "./graph-structure-asserter";
 function registerTestNodeType(registry: NodeRegistry, type: string, version: number) {
   const fullType = type.includes(".") ? type : `test.${type}`;
   registry.registerNode({
-    type: `${fullType}@${version}`,
+    type: fullType,
+    version: version,
     metadata: { name: type, description: "Test node" },
     inputs: {},
     outputs: {},

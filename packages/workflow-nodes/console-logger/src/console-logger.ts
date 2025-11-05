@@ -1,7 +1,8 @@
 import type { NodeDefinition } from "@workflow/registry";
 
 export const consoleLoggerNode: NodeDefinition = {
-  type: "console.log@1",
+  type: "console.log",
+  version: 1,
   metadata: {
     name: "Console Logger",
     description: "Logs messages to the console",
