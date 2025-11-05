@@ -9,3 +9,5 @@ export type { GraphStructure, SimpleEdge, SimpleNode } from "@/public/types/grap
 export type { UUID } from "@/public/types/uuid";
 export { WorkflowBuilder } from "@/public/workflow-builder";
 export { WorkflowDefinition } from "@/public/workflow-definition";
+export type { ExecutionStep } from "@/public/workflow-iterator";
+export { WorkflowIterator } from "@/public/workflow-iterator";

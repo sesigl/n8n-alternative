@@ -6,19 +6,23 @@ import type { WorkflowMetadata } from "@/internal/workflow/metadata/workflow-met
 import { Entrypoints } from "@/internal/workflow/validation/entrypoints";
 import type { GraphStructure } from "@/public/types/graph-structure";
 import type { UUID } from "@/public/types/uuid";
+import { WorkflowIterator } from "@/public/workflow-iterator";
 
 export class WorkflowDefinition {
   private readonly graph: WorkflowGraph;
   private readonly entrypointsVO: Entrypoints;
+  private readonly registry: NodeRegistry;
 
   private constructor(
     public readonly metadata: WorkflowMetadata,
     nodes: Node[],
     edges: Edge[],
     entrypoints: UUID[],
+    registry: NodeRegistry,
   ) {
     this.graph = WorkflowGraph.create(nodes, edges);
     this.entrypointsVO = Entrypoints.create(entrypoints);
+    this.registry = registry;
   }
 
   static create(
@@ -28,24 +32,33 @@ export class WorkflowDefinition {
     entrypoints: UUID[],
     registry: NodeRegistry,
   ): WorkflowDefinition {
-    const workflow = new WorkflowDefinition(metadata, nodes, edges, entrypoints);
-    workflow.validate(registry);
+    const workflow = new WorkflowDefinition(metadata, nodes, edges, entrypoints, registry);
+    workflow.validate();
     return workflow;
   }
 
-  private validate(registry: NodeRegistry): void {
+  private validate(): void {
     this.graph.validateEdgeReferences();
     this.entrypointsVO.validateAgainstGraph(this.graph);
     this.graph.validateAcyclic();
-    this.validateAgainstRegistry(registry);
+    this.validateAgainstRegistry();
   }
 
-  private validateAgainstRegistry(registry: NodeRegistry): void {
+  private validateAgainstRegistry(): void {
     for (const node of this.graph.nodes) {
-      if (!registry.getNode(node.spec.type, node.spec.version)) {
+      if (!this.registry.getNode(node.spec.type, node.spec.version)) {
         throw new Error(`Node type not found: ${node.spec.type}@${node.spec.version}`);
       }
     }
+  }
+
+  createIterator(): WorkflowIterator {
+    return new WorkflowIterator(
+      this.graph.nodes,
+      this.graph.edges,
+      this.entrypointsVO.entrypoints,
+      this.registry,
+    );
   }
 
   getGraphStructure(): GraphStructure {
