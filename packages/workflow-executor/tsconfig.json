@@ -9,5 +9,5 @@
     }
   },
   "include": ["src", "tests"],
-  "references": []
+  "references": [{ "path": "../workflow-core" }, { "path": "../workflow-registry" }]
 }

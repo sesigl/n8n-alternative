@@ -11,7 +11,8 @@ describe("NodeRegistry", () => {
   describe("registerNode", () => {
     it("should register a node type successfully", () => {
       const nodeDefinition = {
-        type: "console.log@1",
+        type: "console.log",
+        version: 1,
         metadata: {
           name: "Console Logger",
           description: "Logs messages to console",
@@ -37,7 +38,8 @@ describe("NodeRegistry", () => {
 
     it("should reject invalid node type names", () => {
       const nodeDefinition = {
-        type: "console.log",
+        type: "console-log",
+        version: 1,
         metadata: {
           name: "Console Logger",
           description: "Logs messages to console",
@@ -52,7 +54,8 @@ describe("NodeRegistry", () => {
 
     it("should prevent duplicate node type registrations", () => {
       const nodeDefinition = {
-        type: "console.log@1",
+        type: "console.log",
+        version: 1,
         metadata: {
           name: "Console Logger",
           description: "Logs messages to console",
@@ -74,7 +77,8 @@ describe("NodeRegistry", () => {
   describe("listNodeTypes", () => {
     it("should list all registered node types", () => {
       registry.registerNode({
-        type: "console.log@1",
+        type: "console.log",
+        version: 1,
         metadata: { name: "Console Logger", description: "Logs to console" },
         inputs: { message: "string" },
         outputs: { logged: "string" },
@@ -82,7 +86,8 @@ describe("NodeRegistry", () => {
       });
 
       registry.registerNode({
-        type: "trigger.execution@1",
+        type: "trigger.execution",
+        version: 1,
         metadata: { name: "Execution Trigger", description: "Triggers execution" },
         inputs: {},
         outputs: { context: "string" },
@@ -102,9 +107,10 @@ describe("NodeRegistry", () => {
   });
 
   describe("getNode", () => {
-    it("should retrieve a registered node by type", () => {
+    it("should retrieve a registered node by type and version", () => {
       const nodeDefinition = {
-        type: "console.log@1",
+        type: "console.log",
+        version: 1,
         metadata: { name: "Console Logger", description: "Logs to console" },
         inputs: { message: "string" },
         outputs: { logged: "string" },
@@ -112,10 +118,11 @@ describe("NodeRegistry", () => {
       };
       registry.registerNode(nodeDefinition);
 
-      const retrievedNode = registry.getNode("console.log@1");
+      const retrievedNode = registry.getNode("console.log", 1);
 
       expect(retrievedNode).toBeDefined();
-      expect(retrievedNode?.type).toBe("console.log@1");
+      expect(retrievedNode?.type).toBe("console.log");
+      expect(retrievedNode?.version).toBe(1);
       expect(retrievedNode?.metadata.name).toBe("Console Logger");
       expect(retrievedNode?.metadata.description).toBe("Logs to console");
       expect(retrievedNode?.inputs).toEqual({ message: "string" });
@@ -124,7 +131,7 @@ describe("NodeRegistry", () => {
     });
 
     it("should return undefined for non-existent node type", () => {
-      const node = registry.getNode("non.existent@1");
+      const node = registry.getNode("non.existent", 1);
 
       expect(node).toBeUndefined();
     });

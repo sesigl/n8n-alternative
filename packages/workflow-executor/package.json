@@ -1,5 +1,5 @@
 {
-  "name": "@workflow/core",
+  "name": "@workflow/executor",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/src/public/index.js",
@@ -21,12 +21,13 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@workflow/registry": "workspace:*",
-    "uuid": "13.0.0"
+    "@workflow/core": "workspace:*",
+    "@workflow/registry": "workspace:*"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "4.0.6",
     "typescript": "5.9.3",
+    "vite-tsconfig-paths": "5.1.4",
     "vitest": "4.0.6"
   }
 }

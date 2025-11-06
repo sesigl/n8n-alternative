@@ -5,6 +5,7 @@ export interface NodeMetadata {
 
 export interface NodeDefinition {
   type: string;
+  version: number;
   metadata: NodeMetadata;
   inputs: Record<string, string>;
   outputs: Record<string, string>;

@@ -1,22 +1,24 @@
-const NODE_TYPE_NAME_PATTERN = /^[a-z]+\.[a-z]+@\d+$/;
+const NODE_TYPE_NAME_PATTERN = /^[a-z]+\.[a-z]+$/;
 
 export class NodeType {
-  private readonly value: string;
+  private readonly typeName: string;
+  private readonly version: number;
 
-  constructor(typeName: string) {
+  constructor(typeName: string, version: number) {
     if (!NODE_TYPE_NAME_PATTERN.test(typeName)) {
       throw new Error(
-        `Invalid node type name: ${typeName}. Expected format: namespace.action@version (e.g., "console.log@1")`,
+        `Invalid node type name: ${typeName}. Expected format: namespace.action (e.g., "console.log")`,
       );
     }
-    this.value = typeName;
+    this.typeName = typeName;
+    this.version = version;
   }
 
   toString(): string {
-    return this.value;
+    return `${this.typeName}@${this.version}`;
   }
 
   equals(other: NodeType): boolean {
-    return this.value === other.value;
+    return this.typeName === other.typeName && this.version === other.version;
   }
 }

@@ -1,3 +1,4 @@
+import type { NodeRegistry } from "@workflow/registry";
 import { generateUUID } from "@/internal/uuid";
 import { Edge } from "@/internal/workflow/graph/edge";
 import { EdgeEndpoint } from "@/internal/workflow/graph/edge-endpoint";
@@ -107,7 +108,13 @@ export class WorkflowBuilder {
     this.entrypoints = nodeIds;
   }
 
-  build(): WorkflowDefinition {
-    return WorkflowDefinition.create(this.metadata, this.nodes, this.edges, this.entrypoints);
+  build(registry: NodeRegistry): WorkflowDefinition {
+    return WorkflowDefinition.create(
+      this.metadata,
+      this.nodes,
+      this.edges,
+      this.entrypoints,
+      registry,
+    );
   }
 }

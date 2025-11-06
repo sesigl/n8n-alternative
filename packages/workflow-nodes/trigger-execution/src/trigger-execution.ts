@@ -1,7 +1,8 @@
 import type { NodeDefinition } from "@workflow/registry";
 
 export const triggerExecutionNode: NodeDefinition = {
-  type: "trigger.execution@1",
+  type: "trigger.execution",
+  version: 1,
   metadata: {
     name: "Execution Trigger",
     description: "Manually initiates workflow execution",
