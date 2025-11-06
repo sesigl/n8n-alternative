@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "turbo run dev --parallel",
     "build": "turbo run build",
-    "test": "pnpm vitest",
+    "test": "pnpm vitest run",
     "test:coverage": "pnpm vitest run --coverage",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
