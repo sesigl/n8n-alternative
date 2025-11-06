@@ -1,46 +1,36 @@
 #!/usr/bin/env bash
 set -e
 
-# Script to merge coverage reports from all packages/apps/services and generate a badge
+# Script to use workspace coverage report and generate a badge
 # Usage: ./scripts/generate-coverage-badge.sh [output-dir]
 
 OUTPUT_DIR="${1:-coverage-reports}"
+LCOV_FILE="coverage/lcov.info"
 
 echo "Generating coverage badge..."
 mkdir -p "$OUTPUT_DIR"
 
-# Find all lcov.info files from packages, apps, and services
-LCOV_FILES=()
-for dir in packages apps services; do
-  if [ -d "$dir" ]; then
-    for subdir in "$dir"/*; do
-      if [ -f "$subdir/coverage/lcov.info" ]; then
-        LCOV_FILES+=("$subdir/coverage/lcov.info")
-        # Copy HTML reports too
-        package_name=$(basename "$dir")/$(basename "$subdir")
-        mkdir -p "$OUTPUT_DIR/$package_name"
-        cp -r "$subdir/coverage/"* "$OUTPUT_DIR/$package_name/" 2>/dev/null || true
-        echo "  Copied coverage report for $package_name"
-      fi
-    done
-  fi
-done
-
-# Merge all lcov files and calculate coverage
-if [ ${#LCOV_FILES[@]} -eq 0 ]; then
-  echo "ERROR: No coverage reports found"
+# Check if workspace coverage file exists
+if [ ! -f "$LCOV_FILE" ]; then
+  echo "ERROR: Coverage report not found at $LCOV_FILE"
+  echo "Please run 'pnpm test:coverage' first"
   exit 1
 fi
 
-echo "Merging ${#LCOV_FILES[@]} coverage reports"
-cat "${LCOV_FILES[@]}" > coverage-merged.info
+echo "Using workspace coverage report from $LCOV_FILE"
+
+# Copy HTML reports
+if [ -d "coverage" ]; then
+  cp -r coverage/* "$OUTPUT_DIR/" 2>/dev/null || true
+  echo "  Copied HTML coverage reports"
+fi
 
 # Calculate total coverage percentage
-TOTAL_LINES=$(grep -c "^DA:" coverage-merged.info || echo "0")
-HIT_LINES=$(grep "^DA:" coverage-merged.info | grep -cv ",0$" || echo "0")
+TOTAL_LINES=$(grep -c "^DA:" "$LCOV_FILE" || echo "0")
+HIT_LINES=$(grep "^DA:" "$LCOV_FILE" | grep -cv ",0$" || echo "0")
 
 if [ "$TOTAL_LINES" -eq 0 ]; then
-  echo "ERROR: No coverage data found"
+  echo "ERROR: No coverage data found in $LCOV_FILE"
   exit 1
 fi
 
@@ -90,4 +80,3 @@ cat > "$OUTPUT_DIR/badges/coverage.svg" << EOF
 EOF
 
 echo "Badge generated at $OUTPUT_DIR/badges/coverage.svg with ${COVERAGE}% coverage (color: $COLOR)"
-rm -f coverage-merged.info
