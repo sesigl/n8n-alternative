@@ -13,12 +13,4 @@ export class NodeSpec {
     }
     return new NodeSpec(type, version);
   }
-
-  equals(other: NodeSpec): boolean {
-    return this.type === other.type && this.version === other.version;
-  }
-
-  toString(): string {
-    return `${this.type}@v${this.version}`;
-  }
 }

@@ -23,12 +23,4 @@ export class WorkflowMetadata {
     }
     return new WorkflowMetadata(name, version, createdAt, description);
   }
-
-  withDescription(description: string): WorkflowMetadata {
-    return new WorkflowMetadata(this.name, this.version, this.createdAt, description);
-  }
-
-  toString(): string {
-    return `${this.name} v${this.version}`;
-  }
 }

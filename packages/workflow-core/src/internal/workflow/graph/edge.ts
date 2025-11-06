@@ -17,16 +17,4 @@ export class Edge {
     }
     return new Edge(id, source, target);
   }
-
-  connectsNodes(sourceNodeId: UUID, targetNodeId: UUID): boolean {
-    return this.source.nodeId === sourceNodeId && this.target.nodeId === targetNodeId;
-  }
-
-  equals(other: Edge): boolean {
-    return this.id === other.id;
-  }
-
-  toString(): string {
-    return `Edge(${this.source.toString()} -> ${this.target.toString()})`;
-  }
 }

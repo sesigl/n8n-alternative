@@ -12,19 +12,11 @@ export class Entrypoints {
     return [...this._entrypoints];
   }
 
-  isEntrypoint(nodeId: UUID): boolean {
-    return this._entrypoints.includes(nodeId);
-  }
-
   validateAgainstGraph(graph: WorkflowGraph): void {
     for (const entrypointId of this._entrypoints) {
       if (!graph.hasNode(entrypointId)) {
         throw new Error(`Entrypoint references non-existent node: ${entrypointId}`);
       }
     }
-  }
-
-  get count(): number {
-    return this._entrypoints.length;
   }
 }

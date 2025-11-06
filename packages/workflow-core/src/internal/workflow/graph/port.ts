@@ -15,12 +15,4 @@ export class Port {
     }
     return new Port(id, name);
   }
-
-  equals(other: Port): boolean {
-    return this.id === other.id && this.name === other.name;
-  }
-
-  toString(): string {
-    return `Port(${this.name})`;
-  }
 }

@@ -74,8 +74,4 @@ export class WorkflowDefinition {
       entrypoints: this.entrypointsVO.entrypoints,
     };
   }
-
-  toString(): string {
-    return `WorkflowDefinition(${this.metadata.toString()}, ${this.graph.nodeCount} nodes, ${this.graph.edgeCount} edges)`;
-  }
 }

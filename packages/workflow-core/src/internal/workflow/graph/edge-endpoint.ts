@@ -15,12 +15,4 @@ export class EdgeEndpoint {
     }
     return new EdgeEndpoint(nodeId, portId);
   }
-
-  equals(other: EdgeEndpoint): boolean {
-    return this.nodeId === other.nodeId && this.portId === other.portId;
-  }
-
-  toString(): string {
-    return `${this.nodeId}:${this.portId}`;
-  }
 }

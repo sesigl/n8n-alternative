@@ -50,27 +50,4 @@ export class Node {
       outputs: [...this._ports.outputs],
     };
   }
-
-  hasInputPort(portId: UUID): boolean {
-    return this._ports.inputs.some((port) => port.id === portId);
-  }
-
-  hasOutputPort(portId: UUID): boolean {
-    return this._ports.outputs.some((port) => port.id === portId);
-  }
-
-  findPort(portId: UUID): Port | undefined {
-    return (
-      this._ports.inputs.find((p) => p.id === portId) ||
-      this._ports.outputs.find((p) => p.id === portId)
-    );
-  }
-
-  equals(other: Node): boolean {
-    return this.id === other.id;
-  }
-
-  toString(): string {
-    return `Node(${this.id}, ${this.spec.toString()})`;
-  }
 }

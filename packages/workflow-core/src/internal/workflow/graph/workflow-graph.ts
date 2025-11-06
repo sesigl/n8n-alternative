@@ -28,18 +28,6 @@ export class WorkflowGraph {
     return this._nodes.some((node) => node.id === nodeId);
   }
 
-  findEdge(edgeId: UUID): Edge | undefined {
-    return this._edges.find((edge) => edge.id === edgeId);
-  }
-
-  getIncomingEdges(nodeId: UUID): Edge[] {
-    return this._edges.filter((edge) => edge.target.nodeId === nodeId);
-  }
-
-  getOutgoingEdges(nodeId: UUID): Edge[] {
-    return this._edges.filter((edge) => edge.source.nodeId === nodeId);
-  }
-
   validateEdgeReferences(): void {
     for (const edge of this._edges) {
       if (!this.hasNode(edge.source.nodeId)) {
@@ -94,13 +82,5 @@ export class WorkflowGraph {
         }
       }
     }
-  }
-
-  get nodeCount(): number {
-    return this._nodes.length;
-  }
-
-  get edgeCount(): number {
-    return this._edges.length;
   }
 }
