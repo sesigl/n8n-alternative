@@ -1,9 +1,9 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, spyOn } from "bun:test";
 import { consoleLoggerNode } from "@/console-logger.js";
 
 describe("Console Logger Node", () => {
   beforeEach(() => {
-    vi.spyOn(console, "log").mockImplementation(() => {});
+    spyOn(console, "log").mockImplementation(() => {});
   });
 
   it("should define valid input and output types in schema", () => {
@@ -16,7 +16,17 @@ describe("Console Logger Node", () => {
 
     for (const [outputName, expectedType] of Object.entries(consoleLoggerNode.outputs)) {
       expect(result[outputName]).toBeDefined();
-      expect(typeof result[outputName]).toBe(expectedType);
+      expect(typeof result[outputName]).toBe(
+        expectedType as
+          | "string"
+          | "number"
+          | "bigint"
+          | "boolean"
+          | "symbol"
+          | "undefined"
+          | "object"
+          | "function",
+      );
     }
   });
 

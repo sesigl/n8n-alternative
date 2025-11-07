@@ -2,29 +2,22 @@
   "name": "@workflow-nodes/console-logger",
   "version": "0.1.0",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./src/console-logger.ts",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "default": "./src/console-logger.ts"
     }
   },
   "scripts": {
     "build": "tsc -b",
-    "check:types": "tsc -b",
-    "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest",
-    "lint": "biome check .",
     "clean": "rm -rf dist"
   },
   "dependencies": {
     "@workflow/registry": "workspace:*"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "4.0.6",
-    "typescript": "5.9.3",
-    "vitest": "4.0.6"
+    "typescript": "catalog:"
   }
 }

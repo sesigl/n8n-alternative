@@ -1,4 +1,4 @@
-import { expect } from "vitest";
+import { expect } from "bun:test";
 import type { GraphStructure } from "../src/public/types/graph-structure";
 
 export class GraphStructureAsserter {

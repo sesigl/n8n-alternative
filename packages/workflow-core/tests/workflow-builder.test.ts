@@ -1,5 +1,5 @@
+import { describe, expect, it } from "bun:test";
 import { NodeRegistry } from "@workflow/registry";
-import { describe, expect, it } from "vitest";
 import type { UUID } from "../src/public/types/uuid";
 import { WorkflowBuilder } from "../src/public/workflow-builder";
 import { GraphStructureAsserter } from "./graph-structure-asserter";
