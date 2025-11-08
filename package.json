@@ -6,6 +6,7 @@
   "description": "Modern workflow automation platform",
   "scripts": {
     "dev": "pnpm -r --parallel dev",
+    "build": "pnpm --filter './apps/*' --filter './services/*' build",
     "test": "pnpm vitest run",
     "test:coverage": "pnpm vitest run --coverage",
     "lint": "biome check .",
