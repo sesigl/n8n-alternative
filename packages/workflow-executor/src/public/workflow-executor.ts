@@ -1,6 +1,6 @@
 import type { WorkflowDefinition } from "@workflow/core";
 import type { NodeRegistry } from "@workflow/registry";
-import type { ExecutionResult } from "@/public/types";
+import type { ExecutionResult } from "./types.js";
 
 export class WorkflowExecutor {
   constructor(readonly _registry: NodeRegistry) {}

@@ -1,13 +1,10 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
-    "outDir": "dist",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "tests"],
-  "references": [{ "path": "../workflow-registry" }]
+  "include": ["src", "tests"]
 }

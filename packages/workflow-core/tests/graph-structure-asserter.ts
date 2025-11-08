@@ -1,5 +1,5 @@
 import { expect } from "vitest";
-import type { GraphStructure } from "../src/public/types/graph-structure";
+import type { GraphStructure } from "../src/public/types/graph-structure.js";
 
 export class GraphStructureAsserter {
   constructor(private readonly graph: GraphStructure) {}

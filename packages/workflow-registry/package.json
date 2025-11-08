@@ -2,23 +2,14 @@
   "name": "@workflow/registry",
   "version": "0.1.0",
   "type": "module",
-  "main": "./dist/src/public/index.js",
-  "types": "./dist/src/public/index.d.ts",
-  "exports": {
-    ".": {
-      "development": "./src/public/index.ts",
-      "types": "./dist/src/public/index.d.ts",
-      "import": "./dist/src/public/index.js"
-    }
-  },
+  "main": "./src/public/index.ts",
+  "types": "./src/public/index.ts",
   "scripts": {
-    "build": "tsc -b",
-    "check:types": "tsc -b",
+    "check:types": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
-    "lint": "biome check .",
-    "clean": "rm -rf dist"
+    "lint": "biome check ."
   },
   "dependencies": {
     "zod": "4.1.12"

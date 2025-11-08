@@ -1,7 +1,7 @@
 import type { NodeRegistry } from "@workflow/registry";
-import type { Edge } from "@/internal/workflow/graph/edge";
-import type { Node } from "@/internal/workflow/graph/node";
-import type { UUID } from "@/public/types/uuid";
+import type { Edge } from "../internal/workflow/graph/edge.js";
+import type { Node } from "../internal/workflow/graph/node.js";
+import type { UUID } from "./types/uuid.js";
 
 export interface ExecutionStep {
   nodeId: UUID;

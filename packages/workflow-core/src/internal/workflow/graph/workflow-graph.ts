@@ -1,6 +1,6 @@
-import type { Edge } from "@/internal/workflow/graph/edge";
-import type { Node } from "@/internal/workflow/graph/node";
-import type { UUID } from "@/public/types/uuid";
+import type { UUID } from "../../../public/types/uuid.js";
+import type { Edge } from "./edge.js";
+import type { Node } from "./node.js";
 
 export class WorkflowGraph {
   private constructor(

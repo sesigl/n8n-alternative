@@ -1,5 +1,5 @@
-import { NodeType } from "@/internal/node-type.js";
-import type { NodeDefinition, NodeMetadata } from "@/public/types.js";
+import type { NodeDefinition, NodeMetadata } from "../public/types.js";
+import { NodeType } from "./node-type.js";
 
 export class Node {
   readonly type: NodeType;

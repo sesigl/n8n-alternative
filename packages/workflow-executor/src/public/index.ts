@@ -1,4 +1,4 @@
 // Public API for @workflow/executor
 
-export type { ExecutionResult, NodeExecutionEvent } from "@/public/types.js";
-export { WorkflowExecutor } from "@/public/workflow-executor.js";
+export type { ExecutionResult, NodeExecutionEvent } from "./types.js";
+export { WorkflowExecutor } from "./workflow-executor.js";

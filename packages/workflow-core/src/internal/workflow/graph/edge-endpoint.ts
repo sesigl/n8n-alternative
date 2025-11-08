@@ -1,4 +1,4 @@
-import type { UUID } from "@/public/types/uuid";
+import type { UUID } from "../../../public/types/uuid.js";
 
 export class EdgeEndpoint {
   private constructor(

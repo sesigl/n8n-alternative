@@ -1,12 +1,12 @@
 import type { NodeRegistry } from "@workflow/registry";
-import { generateUUID } from "@/internal/uuid";
-import { Edge } from "@/internal/workflow/graph/edge";
-import { EdgeEndpoint } from "@/internal/workflow/graph/edge-endpoint";
-import { Node } from "@/internal/workflow/graph/node";
-import { NodeSpec } from "@/internal/workflow/metadata/node-spec";
-import { WorkflowMetadata } from "@/internal/workflow/metadata/workflow-metadata";
-import type { UUID } from "@/public/types/uuid";
-import { WorkflowDefinition } from "@/public/workflow-definition";
+import { generateUUID } from "../internal/uuid.js";
+import { Edge } from "../internal/workflow/graph/edge.js";
+import { EdgeEndpoint } from "../internal/workflow/graph/edge-endpoint.js";
+import { Node } from "../internal/workflow/graph/node.js";
+import { NodeSpec } from "../internal/workflow/metadata/node-spec.js";
+import { WorkflowMetadata } from "../internal/workflow/metadata/workflow-metadata.js";
+import type { UUID } from "./types/uuid.js";
+import { WorkflowDefinition } from "./workflow-definition.js";
 
 interface WorkflowInit {
   name: string;

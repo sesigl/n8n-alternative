@@ -1,6 +1,6 @@
-import { Port } from "@/internal/workflow/graph/port";
-import type { NodeSpec } from "@/internal/workflow/metadata/node-spec";
-import type { UUID } from "@/public/types/uuid";
+import type { UUID } from "../../../public/types/uuid.js";
+import type { NodeSpec } from "../metadata/node-spec.js";
+import { Port } from "./port.js";
 
 export class Node {
   private constructor(

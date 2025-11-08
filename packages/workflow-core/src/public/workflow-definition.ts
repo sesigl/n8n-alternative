@@ -1,12 +1,12 @@
 import type { NodeRegistry } from "@workflow/registry";
-import type { Edge } from "@/internal/workflow/graph/edge";
-import type { Node } from "@/internal/workflow/graph/node";
-import { WorkflowGraph } from "@/internal/workflow/graph/workflow-graph";
-import type { WorkflowMetadata } from "@/internal/workflow/metadata/workflow-metadata";
-import { Entrypoints } from "@/internal/workflow/validation/entrypoints";
-import type { GraphStructure } from "@/public/types/graph-structure";
-import type { UUID } from "@/public/types/uuid";
-import { WorkflowIterator } from "@/public/workflow-iterator";
+import type { Edge } from "../internal/workflow/graph/edge.js";
+import type { Node } from "../internal/workflow/graph/node.js";
+import { WorkflowGraph } from "../internal/workflow/graph/workflow-graph.js";
+import type { WorkflowMetadata } from "../internal/workflow/metadata/workflow-metadata.js";
+import { Entrypoints } from "../internal/workflow/validation/entrypoints.js";
+import type { GraphStructure } from "./types/graph-structure.js";
+import type { UUID } from "./types/uuid.js";
+import { WorkflowIterator } from "./workflow-iterator.js";
 
 export class WorkflowDefinition {
   private readonly graph: WorkflowGraph;
