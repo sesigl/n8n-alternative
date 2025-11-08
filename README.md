@@ -6,7 +6,7 @@ Modern workflow automation platform built with TypeScript, Astro, and Solid.js.
 
 ## Tech Stack
 
-- **Monorepo**: pnpm + Turborepo
+- **Monorepo**: pnpm
 - **Language**: TypeScript (strict mode)
 - **Formatter/Linter**: Biome
 - **Frontend**: Astro + Solid.js
@@ -63,6 +63,6 @@ pnpm dev
 
 ## Development
 
-The monorepo uses Turborepo for fast, cached builds and pnpm workspaces for package management.
+The monorepo uses pnpm and typescript project references for task execution and package management.
 
 Each workspace can be run independently or all together using the root scripts.
