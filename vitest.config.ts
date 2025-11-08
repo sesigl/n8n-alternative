@@ -11,10 +11,13 @@ export default defineConfig({
     environment: "node",
     passWithNoTests: true,
     exclude: ["**/node_modules/**", "**/dist/**"],
-    // Auto-discover packages using glob patterns from workspace structure
+    // Auto-discover workspace packages for testing
+    // - Nested packages (packages/workflow-nodes/*) are fully automatic
+    // - Root packages need to be added to the brace expansion list once
+    // This is necessary because packages/* would match non-packages (tsconfig.base.json, workflow-nodes dir)
     projects: [
-      "packages/{workflow-core,workflow-executor,workflow-registry}", // Direct packages
-      "packages/workflow-nodes/*", // Nested packages
+      "packages/{workflow-core,workflow-executor,workflow-registry}",
+      "packages/workflow-nodes/*",
     ],
     coverage: {
       provider: "v8",
