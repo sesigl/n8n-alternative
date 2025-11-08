@@ -1,5 +1,5 @@
-import { Node } from "@/internal/node.js";
-import type { NodeDefinition } from "@/public/types.js";
+import { Node } from "../internal/node.js";
+import type { NodeDefinition } from "./types.js";
 
 export class NodeRegistry {
   private nodes: Map<string, Node> = new Map();

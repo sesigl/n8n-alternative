@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { NodeRegistry } from "@/public/node-registry.js";
+import { NodeRegistry } from "../src/public/node-registry.js";
 
 describe("NodeRegistry", () => {
   let registry: NodeRegistry;

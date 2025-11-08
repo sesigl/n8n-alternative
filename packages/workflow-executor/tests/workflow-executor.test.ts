@@ -1,7 +1,7 @@
 import { WorkflowBuilder } from "@workflow/core";
 import { NodeRegistry } from "@workflow/registry";
 import { describe, expect, it } from "vitest";
-import { WorkflowExecutor } from "@/public/workflow-executor";
+import { WorkflowExecutor } from "../src/public/workflow-executor.js";
 
 describe("WorkflowExecutor", () => {
   it("should accept and validate WorkflowDefinition", () => {

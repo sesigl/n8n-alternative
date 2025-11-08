@@ -1,8 +1,8 @@
 import { NodeRegistry } from "@workflow/registry";
 import { describe, expect, it } from "vitest";
-import type { UUID } from "../src/public/types/uuid";
-import { WorkflowBuilder } from "../src/public/workflow-builder";
-import { GraphStructureAsserter } from "./graph-structure-asserter";
+import type { UUID } from "../src/public/types/uuid.js";
+import { WorkflowBuilder } from "../src/public/workflow-builder.js";
+import { GraphStructureAsserter } from "./graph-structure-asserter.js";
 
 function registerTestNodeType(registry: NodeRegistry, type: string, version: number) {
   const fullType = type.includes(".") ? type : `test.${type}`;

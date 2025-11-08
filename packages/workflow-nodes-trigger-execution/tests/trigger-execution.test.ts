@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { triggerExecutionNode } from "@/trigger-execution.js";
+import { triggerExecutionNode } from "../src/trigger-execution.js";
 
 describe("Trigger Execution Node", () => {
   it("should define valid output types in schema", () => {

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { consoleLoggerNode } from "@/console-logger.js";
+import { consoleLoggerNode } from "../src/console-logger.js";
 
 describe("Console Logger Node", () => {
   beforeEach(() => {
