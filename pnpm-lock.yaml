@@ -87,11 +87,11 @@ importers:
         specifier: 4.0.6
         version: 4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1)
 
-  packages/workflow-nodes/console-logger:
+  packages/workflow-nodes-console-logger:
     dependencies:
       '@workflow/registry':
         specifier: workspace:*
-        version: link:../../workflow-registry
+        version: link:../workflow-registry
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 4.0.6
@@ -103,11 +103,11 @@ importers:
         specifier: 4.0.6
         version: 4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1)
 
-  packages/workflow-nodes/trigger-execution:
+  packages/workflow-nodes-trigger-execution:
     dependencies:
       '@workflow/registry':
         specifier: workspace:*
-        version: link:../../workflow-registry
+        version: link:../workflow-registry
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 4.0.6
