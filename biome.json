@@ -14,8 +14,7 @@
       "!**/.astro",
       "!**/.next",
       "!**/coverage",
-      "!**/build",
-      "!**/.turbo"
+      "!**/build"
     ]
   },
   "formatter": {

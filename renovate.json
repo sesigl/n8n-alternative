@@ -38,12 +38,6 @@
       "matchPackageNames": ["/^@biomejs//"]
     },
     {
-      "description": "Group Turbo updates",
-      "matchPackageNames": ["turbo"],
-      "groupName": "turbo",
-      "groupSlug": "turbo"
-    },
-    {
       "description": "Auto-merge patch and digest updates",
       "matchUpdateTypes": ["patch", "digest"],
       "automerge": true,
