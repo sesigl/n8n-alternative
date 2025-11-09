@@ -9,7 +9,6 @@ onlyBuiltDependencies:
 catalog:
   # Core dependencies
   typescript: 5.9.3
-  zod: 4.1.12
   uuid: 13.0.0
 
   # Testing

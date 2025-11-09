@@ -11,9 +11,6 @@
     "test:watch": "vitest",
     "lint": "biome check ."
   },
-  "dependencies": {
-    "zod": "catalog:"
-  },
   "devDependencies": {
     "@vitest/coverage-v8": "catalog:",
     "typescript": "catalog:",
