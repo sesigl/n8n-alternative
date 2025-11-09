@@ -10,19 +10,18 @@
     "test": "pnpm vitest run",
     "test:coverage": "pnpm vitest run --coverage",
     "lint": "biome check .",
-    "lint:fix": "biome check --write .",
-    "format": "biome format --write .",
-    "check": "pnpm check:pinned-versions && pnpm lint && pnpm check:types && pnpm test",
+    "format": "biome check --write .",
+    "check": "pnpm check:pinned-versions && pnpm lint && pnpm check:types && pnpm test && pnpm build",
     "check:types": "pnpm -r check:types",
     "check:pinned-versions": "bash scripts/check-pinned-versions.sh",
     "clean": "pnpm -r exec rm -rf dist && rm -rf node_modules"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.2",
-    "@vitest/coverage-v8": "4.0.6",
-    "typescript": "5.9.3",
-    "vite-tsconfig-paths": "5.1.4",
-    "vitest": "4.0.6"
+    "@biomejs/biome": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "typescript": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "vitest": "catalog:"
   },
   "packageManager": "pnpm@10.20.0",
   "engines": {

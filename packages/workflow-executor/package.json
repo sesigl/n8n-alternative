@@ -16,9 +16,9 @@
     "@workflow/registry": "workspace:*"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "4.0.6",
-    "typescript": "5.9.3",
-    "vite-tsconfig-paths": "5.1.4",
-    "vitest": "4.0.6"
+    "@vitest/coverage-v8": "catalog:",
+    "typescript": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "vitest": "catalog:"
   }
 }

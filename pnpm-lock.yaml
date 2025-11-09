@@ -4,43 +4,79 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@astrojs/check':
+      specifier: 0.9.5
+      version: 0.9.5
+    '@astrojs/solid-js':
+      specifier: 5.1.2
+      version: 5.1.2
+    '@biomejs/biome':
+      specifier: 2.3.2
+      version: 2.3.2
+    '@vitest/coverage-v8':
+      specifier: 4.0.6
+      version: 4.0.6
+    astro:
+      specifier: 5.15.3
+      version: 5.15.3
+    solid-js:
+      specifier: 1.9.10
+      version: 1.9.10
+    typescript:
+      specifier: 5.9.3
+      version: 5.9.3
+    uuid:
+      specifier: 13.0.0
+      version: 13.0.0
+    vite-tsconfig-paths:
+      specifier: 5.1.4
+      version: 5.1.4
+    vitest:
+      specifier: 4.0.6
+      version: 4.0.6
+    zod:
+      specifier: 4.1.12
+      version: 4.1.12
+
 importers:
 
   .:
     devDependencies:
       '@biomejs/biome':
-        specifier: 2.3.2
+        specifier: 'catalog:'
         version: 2.3.2
       '@vitest/coverage-v8':
-        specifier: 4.0.6
+        specifier: 'catalog:'
         version: 4.0.6(vitest@4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1))
       typescript:
-        specifier: 5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       vite-tsconfig-paths:
-        specifier: 5.1.4
+        specifier: 'catalog:'
         version: 5.1.4(typescript@5.9.3)(vite@6.4.1(@types/node@24.9.2)(yaml@2.8.1))
       vitest:
-        specifier: 4.0.6
+        specifier: 'catalog:'
         version: 4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1)
 
   apps/ui:
     dependencies:
       '@astrojs/check':
-        specifier: 0.9.5
+        specifier: 'catalog:'
         version: 0.9.5(prettier@3.6.2)(typescript@5.9.3)
       '@astrojs/solid-js':
-        specifier: 5.1.2
+        specifier: 'catalog:'
         version: 5.1.2(@types/node@24.9.2)(solid-js@1.9.10)(yaml@2.8.1)
       astro:
-        specifier: 5.15.3
+        specifier: 'catalog:'
         version: 5.15.3(@types/node@24.9.2)(rollup@4.52.5)(typescript@5.9.3)(yaml@2.8.1)
       solid-js:
-        specifier: 1.9.10
+        specifier: 'catalog:'
         version: 1.9.10
     devDependencies:
       typescript:
-        specifier: 5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   packages/workflow-core:
@@ -49,17 +85,17 @@ importers:
         specifier: workspace:*
         version: link:../workflow-registry
       uuid:
-        specifier: 13.0.0
+        specifier: 'catalog:'
         version: 13.0.0
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: 4.0.6
+        specifier: 'catalog:'
         version: 4.0.6(vitest@4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1))
       typescript:
-        specifier: 5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       vitest:
-        specifier: 4.0.6
+        specifier: 'catalog:'
         version: 4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1)
 
   packages/workflow-executor:
@@ -72,16 +108,16 @@ importers:
         version: link:../workflow-registry
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: 4.0.6
+        specifier: 'catalog:'
         version: 4.0.6(vitest@4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1))
       typescript:
-        specifier: 5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       vite-tsconfig-paths:
-        specifier: 5.1.4
+        specifier: 'catalog:'
         version: 5.1.4(typescript@5.9.3)(vite@6.4.1(@types/node@24.9.2)(yaml@2.8.1))
       vitest:
-        specifier: 4.0.6
+        specifier: 'catalog:'
         version: 4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1)
 
   packages/workflow-nodes-console-logger:
@@ -91,13 +127,13 @@ importers:
         version: link:../workflow-registry
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: 4.0.6
+        specifier: 'catalog:'
         version: 4.0.6(vitest@4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1))
       typescript:
-        specifier: 5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       vitest:
-        specifier: 4.0.6
+        specifier: 'catalog:'
         version: 4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1)
 
   packages/workflow-nodes-trigger-execution:
@@ -107,29 +143,29 @@ importers:
         version: link:../workflow-registry
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: 4.0.6
+        specifier: 'catalog:'
         version: 4.0.6(vitest@4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1))
       typescript:
-        specifier: 5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       vitest:
-        specifier: 4.0.6
+        specifier: 'catalog:'
         version: 4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1)
 
   packages/workflow-registry:
     dependencies:
       zod:
-        specifier: 4.1.12
+        specifier: 'catalog:'
         version: 4.1.12
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: 4.0.6
+        specifier: 'catalog:'
         version: 4.0.6(vitest@4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1))
       typescript:
-        specifier: 5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       vitest:
-        specifier: 4.0.6
+        specifier: 'catalog:'
         version: 4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1)
 
 packages:

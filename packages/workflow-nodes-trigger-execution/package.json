@@ -15,8 +15,8 @@
     "@workflow/registry": "workspace:*"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "4.0.6",
-    "typescript": "5.9.3",
-    "vitest": "4.0.6"
+    "@vitest/coverage-v8": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }
