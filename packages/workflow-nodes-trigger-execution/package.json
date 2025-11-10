@@ -12,7 +12,8 @@
     "lint": "biome check ."
   },
   "dependencies": {
-    "@workflow/registry": "workspace:*"
+    "@workflow/registry": "workspace:*",
+    "arktype": "catalog:"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "catalog:",

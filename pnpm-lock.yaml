@@ -18,6 +18,9 @@ catalogs:
     '@vitest/coverage-v8':
       specifier: 4.0.6
       version: 4.0.6
+    arktype:
+      specifier: 2.0.0
+      version: 2.0.0
     astro:
       specifier: 5.15.4
       version: 5.15.4
@@ -107,6 +110,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.0.6(vitest@4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1))
+      arktype:
+        specifier: 'catalog:'
+        version: 2.0.0
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
@@ -122,6 +128,9 @@ importers:
       '@workflow/registry':
         specifier: workspace:*
         version: link:../workflow-registry
+      arktype:
+        specifier: 'catalog:'
+        version: 2.0.0
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
@@ -138,6 +147,9 @@ importers:
       '@workflow/registry':
         specifier: workspace:*
         version: link:../workflow-registry
+      arktype:
+        specifier: 'catalog:'
+        version: 2.0.0
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
@@ -150,6 +162,10 @@ importers:
         version: 4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1)
 
   packages/workflow-registry:
+    dependencies:
+      arktype:
+        specifier: 'catalog:'
+        version: 2.0.0
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
@@ -162,6 +178,12 @@ importers:
         version: 4.0.6(@types/debug@4.1.12)(@types/node@24.9.2)(yaml@2.8.1)
 
 packages:
+
+  '@ark/schema@0.35.0':
+    resolution: {integrity: sha512-cV3tiYpIFIt4JB4ZrXSUJ6v2nnAzbX5DqaNWRMpk4pVQV15HMEawg6wYn+JKEI16vfRCIcGqxxdGBvE0zIxqKw==}
+
+  '@ark/util@0.35.0':
+    resolution: {integrity: sha512-KxhwMOGMoV605zcqoBVyNFEtKAc3PKy95IWmVz9dwuUzIQ+sh7Bk9KEnlGPXcPAD8DCDs/10deHeO1kfWWONvg==}
 
   '@astrojs/check@0.9.5':
     resolution: {integrity: sha512-88vc8n2eJ1Oua74yXSGo/8ABMeypfQPGEzuoAx2awL9Ju8cE6tZ2Rz9jVx5hIExHK5gKVhpxfZj4WXm7e32g1w==}
@@ -994,6 +1016,9 @@ packages:
   aria-query@5.3.2:
     resolution: {integrity: sha512-COROpnaoap1E2F000S62r6A60uHZnmlvomhfyT2DlTcrY1OrBKn2UhH7qn5wTC9zMvD0AY7csdPSNwKP+7WiQw==}
     engines: {node: '>= 0.4'}
+
+  arktype@2.0.0:
+    resolution: {integrity: sha512-LVuXndcKO+zB7Hg9laGJmXYD5BZYhm/cUFL5pgB/75/3sGnvN8fsQ/yuBlf4JSn90g4rOoU7+9aTvdn5lToWOg==}
 
   array-iterate@2.0.1:
     resolution: {integrity: sha512-I1jXZMjAgCMmxT4qxXfPXa6SthSoE8h6gkSI9BGGNv8mP8G/v0blc+qFnZu6K42vTOiuME596QaLO0TP3Lk0xg==}
@@ -2367,6 +2392,12 @@ packages:
 
 snapshots:
 
+  '@ark/schema@0.35.0':
+    dependencies:
+      '@ark/util': 0.35.0
+
+  '@ark/util@0.35.0': {}
+
   '@astrojs/check@0.9.5(prettier@3.6.2)(typescript@5.9.3)':
     dependencies:
       '@astrojs/language-server': 2.16.0(prettier@3.6.2)(typescript@5.9.3)
@@ -3167,6 +3198,11 @@ snapshots:
   argparse@2.0.1: {}
 
   aria-query@5.3.2: {}
+
+  arktype@2.0.0:
+    dependencies:
+      '@ark/schema': 0.35.0
+      '@ark/util': 0.35.0
 
   array-iterate@2.0.1: {}
 

@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "catalog:",
+    "arktype": "catalog:",
     "typescript": "catalog:",
     "vite-tsconfig-paths": "catalog:",
     "vitest": "catalog:"

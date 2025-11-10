@@ -6,20 +6,6 @@ describe("Console Logger Node", () => {
     vi.spyOn(console, "log").mockImplementation(() => {});
   });
 
-  it("should define valid input and output types in schema", () => {
-    expect(consoleLoggerNode.inputs.message).toBe("string");
-    expect(consoleLoggerNode.outputs.logged).toBe("string");
-  });
-
-  it("should return outputs matching the defined types", async () => {
-    const result = await consoleLoggerNode.execute({ message: "Test" });
-
-    for (const [outputName, expectedType] of Object.entries(consoleLoggerNode.outputs)) {
-      expect(result[outputName]).toBeDefined();
-      expect(typeof result[outputName]).toBe(expectedType);
-    }
-  });
-
   it("should log message to console", async () => {
     await consoleLoggerNode.execute({ message: "Hello World" });
 

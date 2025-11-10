@@ -1,3 +1,4 @@
+import { type } from "arktype";
 import { WorkflowBuilder } from "@workflow/core";
 import { NodeRegistry } from "@workflow/registry";
 import { describe, expect, it } from "vitest";
@@ -40,8 +41,8 @@ describe("WorkflowExecutor", () => {
       type: "trigger.test",
       version: 1,
       metadata: { name: "Test Trigger", description: "Test trigger node" },
-      inputs: {},
-      outputs: { result: "string" },
+      inputSchema: {},
+      outputSchema: { result: type("string") },
       execute: async () => ({ result: "executed" }),
     });
 
@@ -71,12 +72,12 @@ describe("WorkflowExecutor", () => {
       type: "math.add",
       version: 1,
       metadata: { name: "Add", description: "Adds a value" },
-      inputs: { value: "number" },
-      outputs: { result: "number" },
+      inputSchema: { value: type("number") },
+      outputSchema: { result: type("number") },
       // biome-ignore lint/suspicious/useAwait: NodeDefinition requires async execute
-      execute: async (inputs: Record<string, string>) => {
-        const value = Number.parseInt(inputs.value || "0", 10);
-        return { result: (value + 1).toString() };
+      execute: async (inputs: { value: number }) => {
+        const value = inputs.value || 0;
+        return { result: value + 1 };
       },
     });
 
@@ -99,7 +100,7 @@ describe("WorkflowExecutor", () => {
 
     expect(result.status).toBe("completed");
     expect(result.outputs).toBeDefined();
-    expect(result.outputs?.result).toBe("1");
+    expect(result.outputs?.result).toBe(1);
   });
 
   it("should execute multi-node workflow with data flow", async () => {
@@ -109,13 +110,13 @@ describe("WorkflowExecutor", () => {
       type: "math.add",
       version: 1,
       metadata: { name: "Add", description: "Adds a value" },
-      inputs: { value: "number" },
-      outputs: { result: "number" },
+      inputSchema: { value: type("number"), addValue: type("number") },
+      outputSchema: { result: type("number") },
       // biome-ignore lint/suspicious/useAwait: NodeDefinition requires async execute
-      execute: async (inputs: Record<string, string>) => {
-        const value = Number.parseInt(inputs.value || "0", 10);
-        const addValue = Number.parseInt(inputs.addValue || "1", 10);
-        return { result: (value + addValue).toString() };
+      execute: async (inputs: { value: number; addValue: number }) => {
+        const value = inputs.value || 0;
+        const addValue = inputs.addValue || 1;
+        return { result: value + addValue };
       },
     });
 
@@ -148,6 +149,6 @@ describe("WorkflowExecutor", () => {
 
     expect(result.status).toBe("completed");
     expect(result.outputs).toBeDefined();
-    expect(result.outputs?.result).toBe("3");
+    expect(result.outputs?.result).toBe(3);
   });
 });

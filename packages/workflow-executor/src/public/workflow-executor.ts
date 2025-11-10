@@ -8,16 +8,13 @@ export class WorkflowExecutor {
   async execute(workflow: WorkflowDefinition): Promise<ExecutionResult> {
     try {
       const iterator = workflow.createIterator();
-      let lastOutputs: Record<string, string> | undefined;
+      let lastOutputs: Record<string, unknown> | undefined;
 
       let step = iterator.getNextStep();
       while (step !== null) {
-        const inputsAsStrings: Record<string, string> = {};
-        for (const [key, value] of Object.entries(step.inputs)) {
-          inputsAsStrings[key] = String(value);
-        }
-
-        const outputs = await step.execute(inputsAsStrings);
+        // Pass inputs as-is without converting to strings
+        // ArkType will handle validation at the node level
+        const outputs = await step.execute(step.inputs);
         iterator.recordOutput(step.nodeId, outputs);
         lastOutputs = outputs;
 
