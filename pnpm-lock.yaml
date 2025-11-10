@@ -10,8 +10,8 @@ catalogs:
       specifier: 0.9.5
       version: 0.9.5
     '@astrojs/solid-js':
-      specifier: 5.1.2
-      version: 5.1.2
+      specifier: 5.1.3
+      version: 5.1.3
     '@biomejs/biome':
       specifier: 2.3.2
       version: 2.3.2
@@ -19,8 +19,8 @@ catalogs:
       specifier: 4.0.6
       version: 4.0.6
     astro:
-      specifier: 5.15.3
-      version: 5.15.3
+      specifier: 5.15.4
+      version: 5.15.4
     solid-js:
       specifier: 1.9.10
       version: 1.9.10
@@ -64,10 +64,10 @@ importers:
         version: 0.9.5(prettier@3.6.2)(typescript@5.9.3)
       '@astrojs/solid-js':
         specifier: 'catalog:'
-        version: 5.1.2(@types/node@24.9.2)(solid-js@1.9.10)(yaml@2.8.1)
+        version: 5.1.3(@types/node@24.9.2)(solid-js@1.9.10)(yaml@2.8.1)
       astro:
         specifier: 'catalog:'
-        version: 5.15.3(@types/node@24.9.2)(rollup@4.52.5)(typescript@5.9.3)(yaml@2.8.1)
+        version: 5.15.4(@types/node@24.9.2)(rollup@4.52.5)(typescript@5.9.3)(yaml@2.8.1)
       solid-js:
         specifier: 'catalog:'
         version: 1.9.10
@@ -194,8 +194,8 @@ packages:
     resolution: {integrity: sha512-q8VwfU/fDZNoDOf+r7jUnMC2//H2l0TuQ6FkGJL8vD8nw/q5KiL3DS1KKBI3QhI9UQhpJ5dc7AtqfbXWuOgLCQ==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0}
 
-  '@astrojs/solid-js@5.1.2':
-    resolution: {integrity: sha512-0Mt4tDXM4zQ8+WzY1ZNDgBQ4pE8vYW3We1P5XHJA9eOSYV2dhLOGT5zfVTQZ8PWTfZtoKBABtakZmdP97e01uQ==}
+  '@astrojs/solid-js@5.1.3':
+    resolution: {integrity: sha512-KxfYt4y1d7BuSw6EsN1EaPoGYsIES7bEI6AtTbncuabRUUMZs+mOWOeOdmgnwVLj+jbNbhBjUZsqr77eUviZdw==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0}
     peerDependencies:
       solid-devtools: ^0.30.1
@@ -1005,8 +1005,8 @@ packages:
   ast-v8-to-istanbul@0.3.8:
     resolution: {integrity: sha512-szgSZqUxI5T8mLKvS7WTjF9is+MVbOeLADU73IseOcrqhxr/VAvy6wfoVE39KnKzA7JRhjF5eUagNlHwvZPlKQ==}
 
-  astro@5.15.3:
-    resolution: {integrity: sha512-wUO/isJrcUoduRoKacKB9jpO6TxTlPV1zw8UqQx39jSNY7z9IxusJAiib3AiNvqK+dCWhqXx+OnExCCwELmcUw==}
+  astro@5.15.4:
+    resolution: {integrity: sha512-0g/68hLHEJZF2nYUcZM5O0kOnzCsCIf8eA9+0jfBAxp4ycujrIHRgIOdZCFKL9GoTsn8AypWbziypH5aEIF+aA==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -2437,7 +2437,7 @@ snapshots:
     dependencies:
       prismjs: 1.30.0
 
-  '@astrojs/solid-js@5.1.2(@types/node@24.9.2)(solid-js@1.9.10)(yaml@2.8.1)':
+  '@astrojs/solid-js@5.1.3(@types/node@24.9.2)(solid-js@1.9.10)(yaml@2.8.1)':
     dependencies:
       solid-js: 1.9.10
       vite: 6.4.1(@types/node@24.9.2)(yaml@2.8.1)
@@ -3178,7 +3178,7 @@ snapshots:
       estree-walker: 3.0.3
       js-tokens: 9.0.1
 
-  astro@5.15.3(@types/node@24.9.2)(rollup@4.52.5)(typescript@5.9.3)(yaml@2.8.1):
+  astro@5.15.4(@types/node@24.9.2)(rollup@4.52.5)(typescript@5.9.3)(yaml@2.8.1):
     dependencies:
       '@astrojs/compiler': 2.13.0
       '@astrojs/internal-helpers': 0.7.4
