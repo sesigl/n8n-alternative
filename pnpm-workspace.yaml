@@ -10,6 +10,7 @@ catalog:
   # Core dependencies
   typescript: 5.9.3
   uuid: 13.0.0
+  arktype: 2.0.0
 
   # Testing
   vitest: 4.0.6
