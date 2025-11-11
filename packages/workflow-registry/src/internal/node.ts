@@ -15,7 +15,9 @@ export class Node<
 	readonly metadata: NodeMetadata;
 	readonly inputSchema: TInputSchema;
 	readonly outputSchema: TOutputSchema;
-	readonly execute: (
+
+	// Store the original execute function privately
+	private readonly _executeImpl: (
 		inputs: InferSchemaType<TInputSchema>,
 	) => Promise<InferSchemaType<TOutputSchema>>;
 
@@ -24,13 +26,31 @@ export class Node<
 		this.metadata = definition.metadata;
 		this.inputSchema = definition.inputSchema;
 		this.outputSchema = definition.outputSchema;
-		this.execute = definition.execute;
+		this._executeImpl = definition.execute;
 	}
 
 	/**
-	 * Validate inputs against the input schema
+	 * Execute the node with automatic input and output validation
 	 */
-	validateInputs(inputs: unknown): InferSchemaType<TInputSchema> {
+	async execute(
+		inputs: unknown,
+	): Promise<InferSchemaType<TOutputSchema>> {
+		// Validate inputs before execution
+		const validatedInputs = this.validateInputs(inputs);
+
+		// Execute the node logic
+		const outputs = await this._executeImpl(validatedInputs);
+
+		// Validate outputs after execution
+		const validatedOutputs = this.validateOutputs(outputs);
+
+		return validatedOutputs;
+	}
+
+	/**
+	 * Validate inputs against the input schema (private)
+	 */
+	private validateInputs(inputs: unknown): InferSchemaType<TInputSchema> {
 		// If no input schema, return inputs as-is
 		const schemaEntries = Object.entries(this.inputSchema);
 		if (schemaEntries.length === 0) {
@@ -59,9 +79,11 @@ export class Node<
 	}
 
 	/**
-	 * Validate outputs against the output schema
+	 * Validate outputs against the output schema (private)
 	 */
-	validateOutputs(outputs: unknown): InferSchemaType<TOutputSchema> {
+	private validateOutputs(
+		outputs: unknown,
+	): InferSchemaType<TOutputSchema> {
 		// If no output schema, return outputs as-is
 		const schemaEntries = Object.entries(this.outputSchema);
 		if (schemaEntries.length === 0) {

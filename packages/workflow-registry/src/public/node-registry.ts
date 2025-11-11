@@ -49,7 +49,7 @@ export class NodeRegistry {
 	}
 
 	/**
-	 * Get the internal Node instance (used by executor for validation)
+	 * Get the internal Node instance (used by executor)
 	 */
 	getNodeInstance(typeName: string, version: number): Node | undefined {
 		const nodeKey = `${typeName}@${version}`;

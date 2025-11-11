@@ -12,7 +12,7 @@ export class WorkflowExecutor {
 
       let step = iterator.getNextStep();
       while (step !== null) {
-        // Get the Node instance for validation
+        // Get the Node instance
         const nodeInstance = this._registry.getNodeInstance(
           step.nodeType,
           step.nodeVersion,
@@ -24,17 +24,11 @@ export class WorkflowExecutor {
           );
         }
 
-        // Validate inputs before execution
-        const validatedInputs = nodeInstance.validateInputs(step.inputs);
+        // Execute node (validation happens automatically inside execute)
+        const outputs = await nodeInstance.execute(step.inputs);
 
-        // Execute with validated inputs
-        const outputs = await step.execute(validatedInputs);
-
-        // Validate outputs after execution
-        const validatedOutputs = nodeInstance.validateOutputs(outputs);
-
-        iterator.recordOutput(step.nodeId, validatedOutputs);
-        lastOutputs = validatedOutputs;
+        iterator.recordOutput(step.nodeId, outputs);
+        lastOutputs = outputs;
 
         step = iterator.getNextStep();
       }
