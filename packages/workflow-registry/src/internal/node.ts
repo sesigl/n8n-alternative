@@ -31,16 +31,22 @@ export class Node<
 	 * Validate inputs against the input schema
 	 */
 	validateInputs(inputs: unknown): InferSchemaType<TInputSchema> {
+		// If no input schema, return inputs as-is
+		const schemaEntries = Object.entries(this.inputSchema);
+		if (schemaEntries.length === 0) {
+			return inputs as InferSchemaType<TInputSchema>;
+		}
+
 		// Create a combined validator for all input parameters
-		const inputValidator = type(
-			Object.entries(this.inputSchema).reduce(
-				(acc, [key, validator]) => {
-					acc[key] = validator.infer;
-					return acc;
-				},
-				{} as Record<string, unknown>,
-			),
+		const schemaObject = schemaEntries.reduce(
+			(acc, [key, validator]) => {
+				acc[key] = validator;
+				return acc;
+			},
+			{} as Record<string, unknown>,
 		);
+
+		const inputValidator = type(schemaObject);
 
 		const result = inputValidator(inputs);
 		if (result instanceof type.errors) {
@@ -56,16 +62,22 @@ export class Node<
 	 * Validate outputs against the output schema
 	 */
 	validateOutputs(outputs: unknown): InferSchemaType<TOutputSchema> {
+		// If no output schema, return outputs as-is
+		const schemaEntries = Object.entries(this.outputSchema);
+		if (schemaEntries.length === 0) {
+			return outputs as InferSchemaType<TOutputSchema>;
+		}
+
 		// Create a combined validator for all output parameters
-		const outputValidator = type(
-			Object.entries(this.outputSchema).reduce(
-				(acc, [key, validator]) => {
-					acc[key] = validator.infer;
-					return acc;
-				},
-				{} as Record<string, unknown>,
-			),
+		const schemaObject = schemaEntries.reduce(
+			(acc, [key, validator]) => {
+				acc[key] = validator;
+				return acc;
+			},
+			{} as Record<string, unknown>,
 		);
+
+		const outputValidator = type(schemaObject);
 
 		const result = outputValidator(outputs);
 		if (result instanceof type.errors) {

@@ -151,4 +151,78 @@ describe("WorkflowExecutor", () => {
     expect(result.outputs).toBeDefined();
     expect(result.outputs?.result).toBe(3);
   });
+
+  it("should fail when node input does not match schema", async () => {
+    const registry = new NodeRegistry();
+
+    registry.registerNode({
+      type: "math.add",
+      version: 1,
+      metadata: { name: "Add", description: "Adds a value" },
+      inputSchema: { value: type("number") },
+      outputSchema: { result: type("number") },
+      execute: async (inputs: { value: number }) => {
+        return { result: inputs.value + 1 };
+      },
+    });
+
+    const builder = WorkflowBuilder.init({
+      name: "Invalid Input Test",
+      version: "1.0",
+    });
+
+    const nodeId = builder.addNode({
+      spec: { type: "math.add", version: 1 },
+      // Passing a string when number is expected
+      config: { value: "not a number" },
+      ports: { inputs: [{ name: "value" }], outputs: [{ name: "result" }] },
+    });
+
+    builder.setEntrypoints([nodeId]);
+
+    const workflow = builder.build(registry);
+    const executor = new WorkflowExecutor(registry);
+    const result = await executor.execute(workflow);
+
+    expect(result.status).toBe("failed");
+    expect(result.error).toBeDefined();
+    expect(result.error?.message).toContain("Input validation failed");
+  });
+
+  it("should fail when node output does not match schema", async () => {
+    const registry = new NodeRegistry();
+
+    registry.registerNode({
+      type: "math.bad",
+      version: 1,
+      metadata: { name: "Bad Math", description: "Returns invalid output" },
+      inputSchema: { value: type("number") },
+      outputSchema: { result: type("number") },
+      // This node violates the output schema by returning a string
+      execute: async (inputs: { value: number }) => {
+        return { result: "not a number" } as { result: number };
+      },
+    });
+
+    const builder = WorkflowBuilder.init({
+      name: "Invalid Output Test",
+      version: "1.0",
+    });
+
+    const nodeId = builder.addNode({
+      spec: { type: "math.bad", version: 1 },
+      config: { value: 5 },
+      ports: { inputs: [{ name: "value" }], outputs: [{ name: "result" }] },
+    });
+
+    builder.setEntrypoints([nodeId]);
+
+    const workflow = builder.build(registry);
+    const executor = new WorkflowExecutor(registry);
+    const result = await executor.execute(workflow);
+
+    expect(result.status).toBe("failed");
+    expect(result.error).toBeDefined();
+    expect(result.error?.message).toContain("Output validation failed");
+  });
 });
