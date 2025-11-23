@@ -10,8 +10,8 @@ function registerTestNodeType(registry: NodeRegistry, type: string, version: num
     type: fullType,
     version: version,
     metadata: { name: type, description: "Test node" },
-    inputs: {},
-    outputs: {},
+    inputSchema: {},
+    outputSchema: {},
     execute: async () => ({}),
   });
 }

@@ -11,6 +11,9 @@
     "test:watch": "vitest",
     "lint": "biome check ."
   },
+  "dependencies": {
+    "arktype": "catalog:"
+  },
   "devDependencies": {
     "@vitest/coverage-v8": "catalog:",
     "typescript": "catalog:",
