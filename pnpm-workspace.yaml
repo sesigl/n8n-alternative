@@ -17,7 +17,7 @@ catalog:
   vite-tsconfig-paths: 5.1.4
 
   # Linting
-  '@biomejs/biome': 2.3.5
+  '@biomejs/biome': 2.3.7
 
   # Astro (UI-specific but version managed centrally)
   astro: 5.15.8
