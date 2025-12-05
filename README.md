@@ -66,3 +66,7 @@ pnpm dev
 The monorepo uses pnpm and typescript project references for task execution and package management.
 
 Each workspace can be run independently or all together using the root scripts.
+
+## Documentation
+
+Project documentation is maintained in the [`/docs`](./docs) directory.
