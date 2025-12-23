@@ -12,8 +12,8 @@ catalog:
   uuid: 13.0.0
 
   # Testing
-  vitest: 4.0.6
-  '@vitest/coverage-v8': 4.0.6
+  vitest: 4.0.16
+  '@vitest/coverage-v8': 4.0.16
   vite-tsconfig-paths: 5.1.4
 
   # Linting
