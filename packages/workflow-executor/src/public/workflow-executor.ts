@@ -8,16 +8,25 @@ export class WorkflowExecutor {
   async execute(workflow: WorkflowDefinition): Promise<ExecutionResult> {
     try {
       const iterator = workflow.createIterator();
-      let lastOutputs: Record<string, string> | undefined;
+      let lastOutputs: Record<string, unknown> | undefined;
 
       let step = iterator.getNextStep();
       while (step !== null) {
-        const inputsAsStrings: Record<string, string> = {};
-        for (const [key, value] of Object.entries(step.inputs)) {
-          inputsAsStrings[key] = String(value);
+        // Get the Node instance
+        const nodeInstance = this._registry.getNodeInstance(
+          step.nodeType,
+          step.nodeVersion,
+        );
+
+        if (!nodeInstance) {
+          throw new Error(
+            `Node instance not found: ${step.nodeType}@${step.nodeVersion}`,
+          );
         }
 
-        const outputs = await step.execute(inputsAsStrings);
+        // Execute node (validation happens automatically inside execute)
+        const outputs = await nodeInstance.execute(step.inputs);
+
         iterator.recordOutput(step.nodeId, outputs);
         lastOutputs = outputs;
 

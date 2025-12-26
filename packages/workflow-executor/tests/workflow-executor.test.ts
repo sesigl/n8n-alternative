@@ -1,3 +1,4 @@
+import { type } from "arktype";
 import { WorkflowBuilder } from "@workflow/core";
 import { NodeRegistry } from "@workflow/registry";
 import { describe, expect, it } from "vitest";
@@ -40,8 +41,8 @@ describe("WorkflowExecutor", () => {
       type: "trigger.test",
       version: 1,
       metadata: { name: "Test Trigger", description: "Test trigger node" },
-      inputs: {},
-      outputs: { result: "string" },
+      inputSchema: {},
+      outputSchema: { result: type("string") },
       execute: async () => ({ result: "executed" }),
     });
 
@@ -71,12 +72,12 @@ describe("WorkflowExecutor", () => {
       type: "math.add",
       version: 1,
       metadata: { name: "Add", description: "Adds a value" },
-      inputs: { value: "number" },
-      outputs: { result: "number" },
+      inputSchema: { value: type("number") },
+      outputSchema: { result: type("number") },
       // biome-ignore lint/suspicious/useAwait: NodeDefinition requires async execute
-      execute: async (inputs: Record<string, string>) => {
-        const value = Number.parseInt(inputs.value || "0", 10);
-        return { result: (value + 1).toString() };
+      execute: async (inputs: { value: number }) => {
+        const value = inputs.value || 0;
+        return { result: value + 1 };
       },
     });
 
@@ -99,7 +100,7 @@ describe("WorkflowExecutor", () => {
 
     expect(result.status).toBe("completed");
     expect(result.outputs).toBeDefined();
-    expect(result.outputs?.result).toBe("1");
+    expect(result.outputs?.result).toBe(1);
   });
 
   it("should execute multi-node workflow with data flow", async () => {
@@ -109,13 +110,13 @@ describe("WorkflowExecutor", () => {
       type: "math.add",
       version: 1,
       metadata: { name: "Add", description: "Adds a value" },
-      inputs: { value: "number" },
-      outputs: { result: "number" },
+      inputSchema: { value: type("number"), addValue: type("number") },
+      outputSchema: { result: type("number") },
       // biome-ignore lint/suspicious/useAwait: NodeDefinition requires async execute
-      execute: async (inputs: Record<string, string>) => {
-        const value = Number.parseInt(inputs.value || "0", 10);
-        const addValue = Number.parseInt(inputs.addValue || "1", 10);
-        return { result: (value + addValue).toString() };
+      execute: async (inputs: { value: number; addValue: number }) => {
+        const value = inputs.value || 0;
+        const addValue = inputs.addValue || 1;
+        return { result: value + addValue };
       },
     });
 
@@ -148,6 +149,80 @@ describe("WorkflowExecutor", () => {
 
     expect(result.status).toBe("completed");
     expect(result.outputs).toBeDefined();
-    expect(result.outputs?.result).toBe("3");
+    expect(result.outputs?.result).toBe(3);
+  });
+
+  it("should fail when node input does not match schema", async () => {
+    const registry = new NodeRegistry();
+
+    registry.registerNode({
+      type: "math.add",
+      version: 1,
+      metadata: { name: "Add", description: "Adds a value" },
+      inputSchema: { value: type("number") },
+      outputSchema: { result: type("number") },
+      execute: async (inputs: { value: number }) => {
+        return { result: inputs.value + 1 };
+      },
+    });
+
+    const builder = WorkflowBuilder.init({
+      name: "Invalid Input Test",
+      version: "1.0",
+    });
+
+    const nodeId = builder.addNode({
+      spec: { type: "math.add", version: 1 },
+      // Passing a string when number is expected
+      config: { value: "not a number" },
+      ports: { inputs: [{ name: "value" }], outputs: [{ name: "result" }] },
+    });
+
+    builder.setEntrypoints([nodeId]);
+
+    const workflow = builder.build(registry);
+    const executor = new WorkflowExecutor(registry);
+    const result = await executor.execute(workflow);
+
+    expect(result.status).toBe("failed");
+    expect(result.error).toBeDefined();
+    expect(result.error?.message).toContain("Input validation failed");
+  });
+
+  it("should fail when node output does not match schema", async () => {
+    const registry = new NodeRegistry();
+
+    registry.registerNode({
+      type: "math.bad",
+      version: 1,
+      metadata: { name: "Bad Math", description: "Returns invalid output" },
+      inputSchema: { value: type("number") },
+      outputSchema: { result: type("number") },
+      // This node violates the output schema by returning a string
+      execute: async (inputs: { value: number }) => {
+        return { result: "not a number" } as { result: number };
+      },
+    });
+
+    const builder = WorkflowBuilder.init({
+      name: "Invalid Output Test",
+      version: "1.0",
+    });
+
+    const nodeId = builder.addNode({
+      spec: { type: "math.bad", version: 1 },
+      config: { value: 5 },
+      ports: { inputs: [{ name: "value" }], outputs: [{ name: "result" }] },
+    });
+
+    builder.setEntrypoints([nodeId]);
+
+    const workflow = builder.build(registry);
+    const executor = new WorkflowExecutor(registry);
+    const result = await executor.execute(workflow);
+
+    expect(result.status).toBe("failed");
+    expect(result.error).toBeDefined();
+    expect(result.error?.message).toContain("Output validation failed");
   });
 });
